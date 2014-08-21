@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+var config = require('../core/appconfig');
+var debug = require('debug')('Ludus');
+var app = require('../app').defaultSetup();
+
+var port = process.env.PORT || config.get('port') || 3000;
+app.set('port', port);
+
+var server = app.listen(app.get('port'), function() {
+  debug('\nExpress server listening on port ' + server.address().port);
+});

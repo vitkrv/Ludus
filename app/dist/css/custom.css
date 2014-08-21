@@ -1,0 +1,121 @@
+body { padding-top: 50px; }
+a { cursor: pointer; }
+.navbar-default .navbar-collapse {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.breadcrumb {
+  margin: 0;
+  background: none;
+  overflow: hidden;
+}
+.form-login {
+  max-width: 400px;
+  padding: 55px 15px;
+  margin: 0 auto;
+}
+.form-login .form-login-heading {
+  margin-bottom: 10px;
+  text-align: center;
+}
+.form-login .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-login .form-control:focus { z-index: 2; }
+.form-login input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-login input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.form-set-password input[type="password"]:first-of-type{
+    margin-bottom: -1px;
+}
+.caret.caret-reversed {
+    border-top-width: 0;
+    border-bottom: 4px solid #000;
+}
+.page-header .btn {
+  margin-top: 25px;
+}
+.action-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.action-list li {
+  display: inline-block;
+  vertical-align: top;
+}
+.action-list li:before {
+  display: inline-block;
+  content: "|";
+  padding: 0 3px;
+}
+.action-list li:first-child:before {display: none;}
+.menu-list {
+    list-style: none;
+    margin: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 15px;
+}
+.menu-list li {
+    display: inline-block;
+    vertical-align: top;
+}
+.menu-list li:before {
+    display: inline-block;
+    content: "";
+    padding: 0 5px;
+}
+.menu-list li a{
+    color: rgb(255, 255, 255);
+    text-decoration: underline;
+}
+table{
+    font-size: 15px !important;
+}
+.breadcrumb{
+    font-size: 15px !important;
+}
+.center-block{
+    text-align: center;
+}
+tr.border-table th{
+    border-bottom: 1px solid rgba(235, 235, 235, 0.11) !important;
+    border-top: 1px solid rgba(235, 235, 235, 0.11) !important;
+    font-weight: 300;
+}
+th input[type="number"]{
+    width: 105px;
+}
+.page-header {
+    border: none;
+}
+.menu-list li:first-child:before {display: none;}
+.pagination-holder { text-align: center; }
+.modal-body { text-align: center; }
+
+/*forgot password*/
+.form-reset-password input[type="text"]:last-of-type{
+    margin-bottom: 10px;
+}
+.forgot-password{
+    margin-top: 6px;
+    margin-bottom: 13px;
+}
+.forgot-password a{
+    color: rgb(255, 255, 255);
+    text-decoration: underline;
+}
