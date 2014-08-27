@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en" ng-app="app">
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,15 +17,14 @@
 </head>
 <body>
 
-<div class="container col-sm-12">
 
-    <div ng-include="'partials/navbar.html'"></div>
+<div ng-include="'partials/navbar.html'"></div>
+<div ng-include="'partials/jumbotron.html'"></div>
 
-    <div ng-view></div>
+<div ng-view></div>
 
-    <div class="container center-block">
-        <h6>Ludus</h6>
-    </div>
+<div class="container center-block">
+    <h6>Ludus</h6>
 </div>
 
 

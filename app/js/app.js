@@ -13,28 +13,23 @@ app.config(['$locationProvider', '$routeProvider',
         $routeProvider.
             when('/', {
                 templateUrl: 'partials/main.html',
-                controller: 'MainCtrl',
-                label: 'Главная'
+                controller: 'MainCtrl'
             }).
             when('/shop', {
                 templateUrl: 'partials/shop.html',
-                controller: 'ShopCtrl',
-                label: 'Магазин'
+                controller: 'ShopCtrl'
             }).
             when('/mediapartners', {
                 templateUrl: 'partials/mediapartners.html',
-                controller: 'MediaPartnersCtrl',
-                label: 'Медиапартнёры'
+                controller: 'MediaPartnersCtrl'
             }).
             when('/sponsors', {
                 templateUrl: 'partials/sponsors.html',
-                controller: 'SponsorsCtrl',
-                label: 'Спонсоры'
+                controller: 'SponsorsCtrl'
             }).
             when('/about', {
                 templateUrl: 'partials/about.html',
-                controller: 'AboutCtrl',
-                label: 'Контакты'
+                controller: 'AboutCtrl'
             }).
             otherwise({
                 redirectTo: '/'
@@ -43,4 +38,21 @@ app.config(['$locationProvider', '$routeProvider',
 
 app.run(function ($rootScope, $location, $window) {
     $rootScope.location = $location;
+
+    // nav bar
+    $rootScope.toShop = function () {
+        $location.path("/shop");
+    };
+    $rootScope.toAbout = function () {
+        $location.path("/about");
+    };
+    $rootScope.toSponsors = function () {
+        $location.path("/sponsors");
+    };
+    $rootScope.toMediapartners = function () {
+        $location.path("/mediapartners");
+    };
+    $rootScope.toMain = function () {
+        $location.path("/");
+    };
 });
