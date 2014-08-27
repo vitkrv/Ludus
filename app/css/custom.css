@@ -119,6 +119,6 @@ th input[type="number"]{
     color: rgb(255, 255, 255);
     text-decoration: underline;
 }
-.logo img{
-    height: 30px;
+.logo-image{
+    max-height: 450px;
 }

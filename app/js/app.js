@@ -31,6 +31,10 @@ app.config(['$locationProvider', '$routeProvider',
                 templateUrl: 'partials/about.html',
                 controller: 'AboutCtrl'
             }).
+            when('/pubstomps', {
+                templateUrl: 'partials/pubstomps.html',
+                controller: 'PubstompsCtrl'
+            }).
             otherwise({
                 redirectTo: '/'
             });
@@ -42,6 +46,9 @@ app.run(function ($rootScope, $location, $window) {
     // nav bar
     $rootScope.toShop = function () {
         $location.path("/shop");
+    };
+    $rootScope.toPubstomps = function () {
+        $location.path("/pubstomps");
     };
     $rootScope.toAbout = function () {
         $location.path("/about");

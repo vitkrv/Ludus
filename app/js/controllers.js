@@ -23,3 +23,8 @@ appControllers.controller('AboutCtrl', ['$rootScope', '$scope', '$location', '$w
         $rootScope.header = 'Ludus - Контакты';
     }
 ]);
+appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location', '$window',
+    function ($rootScope, $scope, $location, $window) {
+        $rootScope.header = 'Ludus - Пабстомпы';
+    }
+]);
