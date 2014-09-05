@@ -182,13 +182,42 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
     }
 ]);
 
-appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location', '$window', '$routeParams', 'StaffService',
-    function ($rootScope, $scope, $location, $window, $routeParams, StaffService) {
+appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location', '$window', '$upload', '$routeParams', 'StaffService',
+    function ($rootScope, $scope, $location, $window, $upload, $routeParams, StaffService) {
         $rootScope.header = 'Ludus - Редактировать';
 
         StaffService.getOne($routeParams.staffId).success(function (data) {
             $scope.staff = data;
         });
+
+        $scope.addTown = function (town) {
+            var pos = $scope.staff.towns.indexOf(town);
+            if (pos == -1) {
+                $scope.staff.towns.push(town);
+            }
+            else {
+                $scope.staff.towns.splice(pos, 1);
+            }
+        };
+
+        $scope.onFileSelect = function($files) {
+            //$files: an array of files selected, each file has name, size, and type.
+            for (var i = 0; i < $files.length; i++) {
+                var file = $files[i];
+                $scope.upload = $upload.upload({
+                    url: 'server/upload/url',
+                    //method: 'POST' or 'PUT',
+                    //headers: {'header-key': 'header-value'},
+                    //withCredentials: true,
+                    file: file // or list of files ($files) for html5 only
+                }).progress(function(evt) {
+                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                }).success(function(data, status, headers, config) {
+                    // file is uploaded successfully
+                    console.log(data);
+                });
+            }
+        };
     }
 ]);
 appControllers.controller('MediaPartnersCtrl', ['$rootScope', '$scope', '$location', '$window',
@@ -631,4 +660,3 @@ appServices.factory('UserService', function ($http) {
         }
     };
 });
-angular.module("ng-breadcrumbs",[]).factory("breadcrumbs",["$rootScope","$location","$route",function(r,a,t){var e={breadcrumbs:[],get:function(r){if(this.options=r||this.options,this.options)for(var a in this.options)if(this.options.hasOwnProperty(a))for(var t in this.breadcrumbs)if(this.breadcrumbs.hasOwnProperty(t)){var e=this.breadcrumbs[t];e.label===a&&(e.label=this.options[a])}return this.breadcrumbs},generateBreadcrumbs:function(){var r=t.routes,e=a.path().split("/"),n="",o=this,s=function(r){if(t.current){var a;return angular.forEach(t.current.params,function(t,e){-1!==r.indexOf(t)&&(a=t),a&&(r=r.replace(t,":"+e))}),{path:r,param:a}}};""===e[1]&&delete e[1],this.breadcrumbs=[],angular.forEach(e,function(a){n+="/"===n?a:"/"+a;var t=s(n);if(t&&r[t.path]){var e=r[t.path].label||t.param,i=r[t.path].name||"";o.breadcrumbs.push({label:e,path:n,name:i,param:t.param})}})}};return r.$on("$routeChangeSuccess",function(){e.generateBreadcrumbs()}),r.$watch(function(){return e.options},function(){e.generateBreadcrumbs()}),e.generateBreadcrumbs(),e}]);

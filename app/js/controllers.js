@@ -70,13 +70,42 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
     }
 ]);
 
-appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location', '$window', '$routeParams', 'StaffService',
-    function ($rootScope, $scope, $location, $window, $routeParams, StaffService) {
+appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location', '$window', '$upload', '$routeParams', 'StaffService',
+    function ($rootScope, $scope, $location, $window, $upload, $routeParams, StaffService) {
         $rootScope.header = 'Ludus - Редактировать';
 
         StaffService.getOne($routeParams.staffId).success(function (data) {
             $scope.staff = data;
         });
+
+        $scope.addTown = function (town) {
+            var pos = $scope.staff.towns.indexOf(town);
+            if (pos == -1) {
+                $scope.staff.towns.push(town);
+            }
+            else {
+                $scope.staff.towns.splice(pos, 1);
+            }
+        };
+
+        $scope.onFileSelect = function($files) {
+            //$files: an array of files selected, each file has name, size, and type.
+            for (var i = 0; i < $files.length; i++) {
+                var file = $files[i];
+                $scope.upload = $upload.upload({
+                    url: 'server/upload/url',
+                    //method: 'POST' or 'PUT',
+                    //headers: {'header-key': 'header-value'},
+                    //withCredentials: true,
+                    file: file // or list of files ($files) for html5 only
+                }).progress(function(evt) {
+                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                }).success(function(data, status, headers, config) {
+                    // file is uploaded successfully
+                    console.log(data);
+                });
+            }
+        };
     }
 ]);
 appControllers.controller('MediaPartnersCtrl', ['$rootScope', '$scope', '$location', '$window',

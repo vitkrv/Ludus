@@ -11,7 +11,7 @@ var exec = require('child_process').exec;
 
 var paths = {
     dist: "../api/dist/",
-    scripts: ['js/**/*.js', 'lib/ng-breadcrumbs/dist/ng-breadcrumbs.min.js'],
+    scripts: ['js/**/*.js'],
     index: ['index.html'],
     partials: ['partials/**/*.html'],
     fonts: ['fonts/**/*.*'],
@@ -19,6 +19,7 @@ var paths = {
     template: ['template/**/*.html'],
     css: ['css/**/*.css', 'css/**/*.map'],
     angular: ['lib/angular/angular.min.js'],
+    uploadFile: ['lib/ng-file-upload/angular-file-upload-shim.min.js', 'lib/ng-file-upload/angular-file-upload.min.js'],
     jquery: ['lib/jquery/dist/jquery.min.js'],
     bootstrap: ['lib/bootstrap/dist/js/bootstrap.min.js'],
     angular_route: ['lib/angular-route/angular-route.min.js']
@@ -29,7 +30,7 @@ gulp.task('scriptsWatch', function () {
     watch({ glob: paths.scripts }, function () {
         return gulp.src(paths.scripts)
             .pipe(concat('app.js'))
-            .pipe(gulp.dest(paths.dist+'js'));
+            .pipe(gulp.dest(paths.dist + 'js'));
     });
 });
 gulp.task('IndexWatch', function () {
@@ -41,13 +42,13 @@ gulp.task('IndexWatch', function () {
 
 gulp.task('partialsWatch', function () {
     watch({glob: paths.partials}, function (files) {
-        return files.pipe(gulp.dest(paths.dist+'partials'));
+        return files.pipe(gulp.dest(paths.dist + 'partials'));
     });
 });
 
 gulp.task('cssWatch', function () {
     watch({glob: paths.css}, function (files) {
-        return files.pipe(gulp.dest(paths.dist+'css'));
+        return files.pipe(gulp.dest(paths.dist + 'css'));
     });
 });
 
@@ -60,12 +61,12 @@ gulp.task('clean-dist', function (cb) {
 gulp.task('scripts', function () {
     return gulp.src(paths.scripts)
         .pipe(concat('app.js'))
-        .pipe(gulp.dest(paths.dist+'js'));
+        .pipe(gulp.dest(paths.dist + 'js'));
 });
 gulp.task('partials', function () {
     return gulp.src(paths.partials)
         .pipe(cleanhtml())
-        .pipe(gulp.dest(paths.dist+'partials'));
+        .pipe(gulp.dest(paths.dist + 'partials'));
 });
 gulp.task('index', function () {
     return gulp.src(paths.index)
@@ -73,26 +74,26 @@ gulp.task('index', function () {
         .pipe(gulp.dest(paths.dist));
 });
 gulp.task('libs', function () {
-    return gulp.src(paths.angular.concat(paths.jquery, paths.angular_route, paths.bootstrap))
-        .pipe(gulp.dest(paths.dist+'js'));
+    return gulp.src(paths.angular.concat(paths.jquery, paths.angular_route, paths.bootstrap, paths.uploadFile))
+        .pipe(gulp.dest(paths.dist + 'js'));
 });
 
 gulp.task('template', function () {
     return gulp.src(paths.template)
-        .pipe(gulp.dest(paths.dist+'template'));
+        .pipe(gulp.dest(paths.dist + 'template'));
 });
 
 gulp.task('css', function () {
     return gulp.src(paths.css)
-        .pipe(gulp.dest(paths.dist+'css'));
+        .pipe(gulp.dest(paths.dist + 'css'));
 });
 gulp.task('fonts', function () {
     return gulp.src(paths.fonts)
-        .pipe(gulp.dest(paths.dist+'fonts'));
+        .pipe(gulp.dest(paths.dist + 'fonts'));
 });
 gulp.task('img', function () {
     return gulp.src(paths.img)
-        .pipe(gulp.dest(paths.dist+'img'));
+        .pipe(gulp.dest(paths.dist + 'img'));
 });
 
 gulp.task('deploy', function () {
