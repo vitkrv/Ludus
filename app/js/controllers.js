@@ -3,9 +3,16 @@ appControllers.controller('MainCtrl', ['$rootScope', '$scope', '$location', '$wi
         $rootScope.header = 'Ludus - Главная';
     }
 ]);
-appControllers.controller('ShopCtrl', ['$rootScope', '$scope', '$location', '$window',
-    function ($rootScope, $scope, $location, $window) {
+appControllers.controller('ShopCtrl', ['$rootScope', '$scope', '$location', '$window', 'StaffService',
+    function ($rootScope, $scope, $location, $window, StaffService) {
         $rootScope.header = 'Ludus - Магазин';
+        $scope.staff = [];
+
+        StaffService.list().success(function (data) {
+            console.log(data);
+            $scope.staff = data.staffs;
+            //console.log(data.staffs);
+        });
     }
 ]);
 appControllers.controller('MediaPartnersCtrl', ['$rootScope', '$scope', '$location', '$window',

@@ -7,6 +7,7 @@ var appDirectives = angular.module('appDirectives', []);
 var appFilters = angular.module('appFilters', []);
 
 var options = {};
+options.api = {};
 
 app.config(['$locationProvider', '$routeProvider',
     function ($location, $routeProvider) {
@@ -41,6 +42,7 @@ app.config(['$locationProvider', '$routeProvider',
     }]);
 
 app.run(function ($rootScope, $location, $window) {
+    options.api.base_url = $location.protocol() + "://" + $location.host() + ":" + $location.port() + "/v1";
     $rootScope.location = $location;
 
     // nav bar
