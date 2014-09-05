@@ -64,29 +64,19 @@ a { cursor: pointer; }
 }
 .action-list li:first-child:before {display: none;}
 .menu-list {
-    list-style: none;
-    margin: 0;
-    padding-top: 8px;
-    padding-bottom: 8px;
     font-size: 15px;
-}
-.menu-list li {
-    display: inline-block;
-    vertical-align: top;
-}
-.menu-list li:before {
-    display: inline-block;
-    content: "";
-    padding: 0 5px;
 }
 .menu-list li a{
     color: rgb(255, 255, 255);
     text-decoration: underline;
 }
+.menu-list button{
+    margin-top: 5px;
+}
 table{
     font-size: 15px !important;
 }
-.breadcrumb{
+.brand{
     font-size: 15px !important;
 }
 .center-block{

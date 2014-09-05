@@ -1,0 +1,54 @@
+<div>
+    <div class="col-sm-12 col-md-2" ng-include="'partials/admin/menu.html'"></div>
+    <div class="col-sm-12 col-md-10">
+        <table class="table table-striped">
+            <col width="250">
+            <col width="400">
+            <col width="100">
+            <col width="100">
+            <col width="300">
+            <thead>
+            <tr class="border-table">
+                <th><input type="text" class="form-control input-sm" placeholder="Name" ng-model="search.name"></th>
+                <th><input type="text" class="form-control input-sm" placeholder="Description"
+                           ng-model="search.description"></th>
+                <th><input type="number" class="form-control input-sm" placeholder="Price" min="1" ng-model="searchNumber.price"></th>
+                <th><select ng-model="search.available" class="form-control input-sm">
+                    <option></option>
+                    <option>Да</option>
+                    <option>Нет</option>
+                </select></th>
+                <th>
+                    <button type="button" class="btn btn-default pull-right btn-sm"
+                            ng-click="search = {};searchNumber = {} ">Clear filters
+                    </button>
+                </th>
+            </tr>
+            <tr>
+                <th><a href="" ng-click="predicate = 'name'; reverse=!reverse">Название</a>
+                    <span ng-if="predicate=='name'" sort-arrow="reverse"/></th>
+                <th><a href="" ng-click="predicate = 'description'; reverse=!reverse">Описание</a>
+                    <span ng-if="predicate=='description'" sort-arrow="reverse"/></th>
+                <th><a href="" ng-click="predicate = 'price'; reverse=!reverse">Цена</a>
+                    <span ng-if="predicate=='price'" sort-arrow="reverse"/></th>
+                <th><a href="" ng-click="predicate = 'available'; reverse=!reverse">Доступно?</a>
+                    <span ng-if="predicate=='available'" sort-arrow="reverse"/></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in staffs | shopFilter:search:false | shopFilter:searchNumber:true | orderBy:predicate:reverse">
+                <td>{{item.name}}</td>
+                <td>{{item.description}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.available}}</td>
+                <td>
+                    <ul class="action-list">
+                        <li><a ng-click="edit(item.id)">Edit</a></li>
+                    </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

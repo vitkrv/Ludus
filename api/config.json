@@ -2,5 +2,8 @@
     "port" : 3000,
     "mongoose": {
         "uri": "mongodb://localhost/ludus"
+    },
+    "auth" : {
+        "jwtSecret" : "622f56a8be59e0e54de607bbfabc7258bf1b5994fae614b6fe57"
     }
 }

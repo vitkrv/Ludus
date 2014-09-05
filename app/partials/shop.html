@@ -2,16 +2,16 @@
     <div class="row">
         <div class="col-xs-12 col-md-6" ng-repeat="item in staff">
             <div class="thumbnail">
-                <img src="{{item.avatar}}"/>
+                <img ng-src="{{item.avatar}}"/>
+
                 <div class="caption">
                     <h3>{{item.name}}</h3>
 
-                    <p ng-if="item.available">
-                        <mark>Есть в наличии</mark>
+                    <p>
+                        <span ng-if="item.available == 'Да'" class="label label-success">Есть в наличии</span>
+                        <span ng-if="item.available == 'Нет'" class="label label-default">Нет в наличии</span>
                     </p>
-                    <p ng-if="!item.available">
-                        <mark>Нет в наличии</mark>
-                    </p>
+
                     <p>Доступно в: <span ng-repeat="town in item.towns">{{town}} </span></p>
 
                     <p>Стоимость: <strong>{{item.price}} грн</strong></p>

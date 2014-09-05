@@ -1,7 +1,7 @@
 var _ = require('underscore'),
     express = require('express'),
     auth = require('./auth'),
-//   authHandlers = require('../handlers/authHandlers'),
+    authHandlers = require('../handlers/authHandlers'),
     shopHandlers = require('../handlers/shopHandler');
 
 
@@ -11,12 +11,16 @@ module.exports.setup = function (app) {
             r.get('/', shopHandlers.list);
             r.get('/:id', shopHandlers.get);
         }));
-        // todo with auth
-       /* v1.use('/shop', withRouter(auth.requireAuth, function (r) {
+
+        v1.use('/auth', withRouter(function (r) {
+            r.get('/token', authHandlers.token);
+        }));
+
+        v1.use('/shop', withRouter(auth.requireAuth, function (r) {
             r.post('/', shopHandlers.create);
             r.put('/:id', shopHandlers.update);
             r.delete('/:id', shopHandlers.remove);
-        }));*/
+        }));
     }));
 };
 

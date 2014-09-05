@@ -1,5 +1,12 @@
+var userInfo = {
+    username : "admin",
+    email : "vitkrv@gmail.com",
+    password : "1q2w3e"
+};
+
 var q = require('q'),
     mongoose = require('mongoose'),
+    User = require('../core/models/user'),
     Staff = require('../core/models/staff'),
     config = require('../core/appconfig');
 require('colors');
@@ -40,9 +47,50 @@ function createSampleStaff() {
     return def.promise;
 }
 
-db.once('open', function () {
-    createSampleStaff().then(function () {
-        console.log("Finished!");
-        process.exit();
+function createUser(username,pwd, email){
+    var def = q.defer(),
+        user = new User();
+    user.username = username;
+    user.email = email;
+    user.setPassword(pwd)
+        .then(function(){
+            user.save(function (err) {
+                err && def.reject(err);
+                def.resolve(user);
+            });
+        }, function(err){
+            def.reject(err);
+        });
+    return def.promise;
+}
+
+function findUser(username){
+    var def = q.defer();
+
+    User.findOne({ username: username }, function (err, user) {
+        if(err) def.reject(err);
+        else def.resolve(user);
     });
+
+    return def.promise;
+}
+
+db.once('open', function () {
+    findUser(userInfo.username)
+        .then(function (user) {
+            if(!!user){
+                console.log(('Database is already populated with sample data').green);
+            } else {
+                return createUser(userInfo.username, userInfo.password, userInfo.email)
+                    .then(function(){ return createSampleStaff(); })
+                    .then(function(){
+                        console.log(('User ' + JSON.stringify(userInfo) + ' and sample staffs were created.').green);
+                    }, function(err){
+                        console.log('Could not save user or staffs.'.red, err);
+                    });
+            }
+        })
+        .then(function(){
+            process.exit();
+        });
 });

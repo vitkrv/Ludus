@@ -16,6 +16,25 @@ app.config(['$locationProvider', '$routeProvider',
                 templateUrl: 'partials/main.html',
                 controller: 'MainCtrl'
             }).
+            when('/login', {
+                templateUrl: 'partials/login.html',
+                controller: 'UserCtrl'
+            }).
+            when('/admin/staff', {
+                templateUrl: 'partials/admin/editList.html',
+                access: { requiredAuthentication: true },
+                controller: 'StaffCtrl'
+            }).
+            when('/admin/staff/create', {
+                templateUrl: 'partials/admin/createStaff.html',
+                access: { requiredAuthentication: true },
+                controller: 'StaffCreateCtrl'
+            }).
+            when('/admin/staff/edit', {
+                templateUrl: 'partials/admin/editStaff.html',
+                access: { requiredAuthentication: true },
+                controller: 'StaffEditCtrl'
+            }).
             when('/shop', {
                 templateUrl: 'partials/shop.html',
                 controller: 'ShopCtrl'
@@ -41,9 +60,26 @@ app.config(['$locationProvider', '$routeProvider',
             });
     }]);
 
-app.run(function ($rootScope, $location, $window) {
+app.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('TokenInterceptor');
+});
+
+app.run(function ($rootScope, $location, $window, AuthenticationService) {
     options.api.base_url = $location.protocol() + "://" + $location.host() + ":" + $location.port() + "/v1";
     $rootScope.location = $location;
+    $rootScope.isAdmin = $window.sessionStorage;
+    $rootScope.allTowns = ['Харьков', 'Днепропетровск', 'Ужгород'];
+
+    $rootScope.$on("$routeChangeStart", function (event, nextRoute, currentRoute) {
+        //redirect only if both isAuthenticated is false and no token is set
+        if (nextRoute !== null &&
+            nextRoute.access &&
+            nextRoute.access !== null &&
+            nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token) {
+
+            $location.path("/");
+        }
+    });
 
     // nav bar
     $rootScope.toShop = function () {
@@ -64,8 +100,51 @@ app.run(function ($rootScope, $location, $window) {
     $rootScope.toMain = function () {
         $location.path("/");
     };
+
+    // admin panel
+    $rootScope.toCreateStaff = function () {
+        $location.path("/admin/staff/create");
+    };
+    $rootScope.toEditList = function () {
+        $location.path("/admin/staff/");
+    };
 });
 
+appControllers.controller('UserCtrl', ['$rootScope', '$scope', '$location', '$window', 'UserService', 'AuthenticationService',
+    function ($rootScope, $scope, $location, $window, UserService, AuthenticationService) {
+        $scope.showAlert = false;
+
+        $scope.signIn = function signIn(username, password) {
+            if (username !== null && password !== null) {
+
+                UserService.signIn(username, password).success(function (data) {
+                    AuthenticationService.isAuthenticated = true;
+                    $window.sessionStorage.token = data.token;
+                    $window.sessionStorage.username = username;
+                    $rootScope.username = username;
+                    $location.path("/");
+                }).error(function (data, status) {
+                    if (status == 401) {
+                        $scope.showAlert = true;
+                    } else {
+                        // todo insert proper error handling
+                    }
+                });
+            }
+        };
+        $scope.logout = function () {
+            delete $window.sessionStorage.token;
+            AuthenticationService.isAuthenticated = false;
+            $location.path("/");
+        };
+        $scope.switchTwitter = function () {
+            if ($rootScope.hideTwitter)
+                $rootScope.hideTwitter = false;
+            else
+                $rootScope.hideTwitter = true;
+        };
+    }
+]);
 appControllers.controller('MainCtrl', ['$rootScope', '$scope', '$location', '$window',
     function ($rootScope, $scope, $location, $window) {
         $rootScope.header = 'Ludus - Главная';
@@ -77,9 +156,38 @@ appControllers.controller('ShopCtrl', ['$rootScope', '$scope', '$location', '$wi
         $scope.staff = [];
 
         StaffService.list().success(function (data) {
-            console.log(data);
-            $scope.staff = data.staffs;
-            //console.log(data.staffs);
+            $scope.staff = StaffService.prettyArray(data.staffs);
+        });
+    }
+]);
+
+//admin ctrl
+appControllers.controller('StaffCtrl', ['$rootScope', '$scope', '$location', '$window', 'StaffService',
+    function ($rootScope, $scope, $location, $window, StaffService) {
+        $rootScope.header = 'Ludus - Ассортимент магазина';
+
+        StaffService.fulList().success(function (data) {
+            $scope.staffs = StaffService.prettyArray(data.staffs);
+        });
+
+        $scope.edit = function (id) {
+            $location.path('/admin/staff/edit').search('staffId', id);
+        };
+    }
+]);
+
+appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location', '$window',
+    function ($rootScope, $scope, $location, $window) {
+        $rootScope.header = 'Ludus - Добавить в магазин';
+    }
+]);
+
+appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location', '$window', '$routeParams', 'StaffService',
+    function ($rootScope, $scope, $location, $window, $routeParams, StaffService) {
+        $rootScope.header = 'Ludus - Редактировать';
+
+        StaffService.getOne($routeParams.staffId).success(function (data) {
+            $scope.staff = data;
         });
     }
 ]);
@@ -444,11 +552,82 @@ angular.module('ui.bootstrap.pagination', [])
 /* global angular: false */
 appServices.factory('StaffService', function ($http) {
     return {
+        pretty: function (item) {
+            var maxInRow = 22;
+
+            if (item.available && item.available === true)
+                item.available = 'Да';
+            else
+                item.available = 'Нет';
+            if (typeof item.description !== 'undefined' && item.description.length > maxInRow)
+                item.description = item.description.slice(0, maxInRow) + '...';
+
+            return item;
+        },
+        prettyArray: function (array) {
+            for (var i = 0; i < array.length; i++) {
+                array[i] = this.pretty(array[i]);
+            }
+            return array;
+        },
         fulList: function () {
             return $http.get(options.api.base_url + "/shop");
         },
         list: function (size, page) {
             return $http.get(options.api.base_url + '/shop', {params: { page_size: size, page_num: page}});
+        },
+        getOne: function (id) {
+            return $http.get(options.api.base_url + '/shop/' + id);
+        }
+    };
+});
+
+appServices.factory('AuthenticationService', function () {
+    var auth = {
+        isAuthenticated: false
+    };
+
+    return auth;
+});
+
+appServices.factory('TokenInterceptor', function ($q, $window, $location, AuthenticationService) {
+    return {
+        request: function (config) {
+            config.params = config.params || {};
+            if ($window.sessionStorage.token) {
+                config.params.authToken = $window.sessionStorage.token;
+            }
+            return config;
+        },
+
+        requestError: function (rejection) {
+            return $q.reject(rejection);
+        },
+
+        /* Set Authentication.isAuthenticated to true if 200 received */
+        response: function (response) {
+            if (response !== null && response.status == 200 && $window.sessionStorage.token && !AuthenticationService.isAuthenticated) {
+                AuthenticationService.isAuthenticated = true;
+            }
+            return response || $q.when(response);
+        },
+
+        /* Revoke client authentication if 401 is received */
+        responseError: function (rejection) {
+            if (rejection !== null && rejection.status === 401 && ($window.sessionStorage.token || AuthenticationService.isAuthenticated)) {
+                delete $window.sessionStorage.token;
+                AuthenticationService.isAuthenticated = false;
+                $location.path("/");
+            }
+
+            return $q.reject(rejection);
+        }
+    };
+});
+appServices.factory('UserService', function ($http) {
+    return {
+        signIn: function (username, password) {
+            return $http.get(options.api.base_url + '/auth/token', {headers: {username: username, password: password}});
         }
     };
 });

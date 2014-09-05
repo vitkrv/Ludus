@@ -16,6 +16,25 @@ app.config(['$locationProvider', '$routeProvider',
                 templateUrl: 'partials/main.html',
                 controller: 'MainCtrl'
             }).
+            when('/login', {
+                templateUrl: 'partials/login.html',
+                controller: 'UserCtrl'
+            }).
+            when('/admin/staff', {
+                templateUrl: 'partials/admin/editList.html',
+                access: { requiredAuthentication: true },
+                controller: 'StaffCtrl'
+            }).
+            when('/admin/staff/create', {
+                templateUrl: 'partials/admin/createStaff.html',
+                access: { requiredAuthentication: true },
+                controller: 'StaffCreateCtrl'
+            }).
+            when('/admin/staff/edit', {
+                templateUrl: 'partials/admin/editStaff.html',
+                access: { requiredAuthentication: true },
+                controller: 'StaffEditCtrl'
+            }).
             when('/shop', {
                 templateUrl: 'partials/shop.html',
                 controller: 'ShopCtrl'
@@ -41,9 +60,26 @@ app.config(['$locationProvider', '$routeProvider',
             });
     }]);
 
-app.run(function ($rootScope, $location, $window) {
+app.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('TokenInterceptor');
+});
+
+app.run(function ($rootScope, $location, $window, AuthenticationService) {
     options.api.base_url = $location.protocol() + "://" + $location.host() + ":" + $location.port() + "/v1";
     $rootScope.location = $location;
+    $rootScope.isAdmin = $window.sessionStorage;
+    $rootScope.allTowns = ['Харьков', 'Днепропетровск', 'Ужгород'];
+
+    $rootScope.$on("$routeChangeStart", function (event, nextRoute, currentRoute) {
+        //redirect only if both isAuthenticated is false and no token is set
+        if (nextRoute !== null &&
+            nextRoute.access &&
+            nextRoute.access !== null &&
+            nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token) {
+
+            $location.path("/");
+        }
+    });
 
     // nav bar
     $rootScope.toShop = function () {
@@ -63,5 +99,13 @@ app.run(function ($rootScope, $location, $window) {
     };
     $rootScope.toMain = function () {
         $location.path("/");
+    };
+
+    // admin panel
+    $rootScope.toCreateStaff = function () {
+        $location.path("/admin/staff/create");
+    };
+    $rootScope.toEditList = function () {
+        $location.path("/admin/staff/");
     };
 });

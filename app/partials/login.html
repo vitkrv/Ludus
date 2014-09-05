@@ -1,0 +1,18 @@
+
+<div class="container-fluid">
+
+    <form class="form-login" role="form">
+        <div class="well well-lg">
+            <input type="text" class="form-control" placeholder="Username" ng-model="user.username" required autofocus>
+            <input type="password" class="form-control" placeholder="Password" ng-model="user.password" required>
+
+            <div class="alert alert-danger" role="alert" ng-show="showAlert">
+                Wrong login or password
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit"
+                    ng-click="signIn(user.username, user.password)">Login
+            </button>
+        </div>
+    </form>
+
+</div>
