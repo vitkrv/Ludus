@@ -12,6 +12,7 @@ var exec = require('child_process').exec;
 var paths = {
     dist: "../api/dist/",
     scripts: ['js/**/*.js'],
+    scriptsMap: ['lib/jquery/dist/jquery.min.map', 'lib/angular-route/angular-route.min.js.map', 'lib/angular/angular.min.js.map'],
     index: ['index.html'],
     partials: ['partials/**/*.html'],
     fonts: ['fonts/**/*.*'],
@@ -74,7 +75,7 @@ gulp.task('index', function () {
         .pipe(gulp.dest(paths.dist));
 });
 gulp.task('libs', function () {
-    return gulp.src(paths.angular.concat(paths.jquery, paths.angular_route, paths.bootstrap, paths.uploadFile))
+    return gulp.src(paths.angular.concat(paths.jquery, paths.angular_route, paths.bootstrap, paths.uploadFile, paths.scriptsMap))
         .pipe(gulp.dest(paths.dist + 'js'));
 });
 
