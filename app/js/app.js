@@ -113,6 +113,7 @@ app.run(function ($rootScope, $location, $window, AuthenticationService) {
         $location.path("/admin/staff/create");
     };
     $rootScope.toEditList = function () {
+        $location.$$search = {};
         $location.path("/admin/staff/");
     };
 });

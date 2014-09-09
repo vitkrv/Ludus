@@ -81,9 +81,9 @@ var handlers = {
         });
     },
     create: function (req, res, next) {
-       /* var highway = omitPrivates(req.body);
+        var staff = omitPrivates(req.body);
 
-        Highway.create(highway, function (err, data) {
+        Staff.create(staff, function (err, data) {
                 if (err) {
                     switch (err.name) {
                         case 'ValidationError':
@@ -100,21 +100,21 @@ var handlers = {
                     res.send({id: data._id});
                 }
             }
-        );*/
+        );
     },
     update: function (req, res, next) {
-       /* var id;
+        var id;
         try {
             id = mongoose.Types.ObjectId(req.params.id);
         }
         catch (e) {
-            res.send(new routeErrors.HighwayNotFoundError(), 404);
+            res.send(new routeErrors.StaffNotFoundError(), 404);
             return next();
         }
 
-        Highway.findOne({_id: id}, function (err, data) {
+        Staff.findOne({_id: id}, function (err, data) {
             if (err) res.send(new routeErrors.InternalError(), 500);
-            if (!data) res.send(new routeErrors.HighwayNotFoundError(), 404);
+            if (!data) res.send(new routeErrors.StaffNotFoundError(), 404);
             else {
                 (_.extend(data, omitPrivates(req.body))).save(function (err) {
                     if (err) {
@@ -133,7 +133,7 @@ var handlers = {
                     }
                 });
             }
-        });*/
+        });
     },
     remove: function (req, res, next) {
        /* var id;

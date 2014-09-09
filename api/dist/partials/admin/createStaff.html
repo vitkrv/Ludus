@@ -1,0 +1,64 @@
+<div>
+    <div class="col-sm-12 col-md-2" ng-include="'partials/admin/menu.html'"></div>
+    <div class="col-sm-12 col-md-10">
+        <div class="container-fluid">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <div class="col-md-offset-9 col-md-3">
+                        <button type="button" class="btn form-control"
+                                ng-model="staff.available"
+                                ng-click="staff.available = !staff.available"
+                                ng-class="{'btn-success':staff.available, 'btn-danger': !staff.available}"
+                                value="">
+                            <span ng-if="staff.available">Доступно</span>
+                            <span ng-if="!staff.available">Не доступно</span>
+                        </button>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <img class="img-responsive" ng-src="{{staff.avatar}}"/>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="file" ng-file-select="onFileSelect($files)">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" placeholder="Название" ng-model="staff.name" required
+                               autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="number" class="form-control" placeholder="Стоимость" ng-model="staff.price"
+                                   required>
+                            <span class="input-group-addon">грн</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p class="col-md-12">Доступно в: <span ng-repeat="town in staff.towns">{{town}} </span></p>
+
+                    <div class="btn-group btn-group-sm col-md-12">
+                        <button ng-repeat="town in allTowns" type="button" class="btn btn-default btn-sm"
+                                ng-click="addTown(town)">{{town}}
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <textarea rows="5" class="form-control" placeholder="Описание продукта"
+                                  ng-model="staff.description"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success" ng-click="createStaff()">Создать</button>
+                <button type="button" class="btn btn-danger" ng-click="cancelChanges()">Отменить</button>
+            </form>
+        </div>
+    </div>
+</div>

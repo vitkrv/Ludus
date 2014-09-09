@@ -27,6 +27,12 @@ appServices.factory('StaffService', function ($http) {
         getOne: function (id) {
             return $http.get(options.api.base_url + '/shop/' + id);
         },
+        updateStaff: function (staff) {
+            return $http.put(options.api.base_url + '/shop/' + staff.id, staff);
+        },
+        createStaff: function (staff) {
+            return $http.post(options.api.base_url + '/shop/', staff);
+        },
         imgClean: function (name) {
             return $http.delete(options.api.base_url + '/img/delete', {headers: {filename: name}});
         }

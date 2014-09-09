@@ -8,7 +8,7 @@ var Staff = new mongoose.Schema({
     avatar: { type: String, required: false },
     available: { type: Boolean, required: false },
     towns: {type: [String], required: true},
-    photos: {type: [String], required: true}
+    photos: {type: [String], required: false}
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true }, collection: 'staffs'});
 
 

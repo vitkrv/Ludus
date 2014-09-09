@@ -113,6 +113,7 @@ app.run(function ($rootScope, $location, $window, AuthenticationService) {
         $location.path("/admin/staff/create");
     };
     $rootScope.toEditList = function () {
+        $location.$$search = {};
         $location.path("/admin/staff/");
     };
 });
@@ -183,9 +184,57 @@ appControllers.controller('StaffCtrl', ['$rootScope', '$scope', '$location', '$w
     }
 ]);
 
-appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location', '$window',
-    function ($rootScope, $scope, $location, $window) {
+appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location', '$window', '$upload', 'StaffService',
+    function ($rootScope, $scope, $location, $window, $upload, StaffService) {
         $rootScope.header = 'Ludus - Добавить в магазин';
+
+        $scope.staff = {};
+        $scope.staff.avatar = options.url + '/img/default-staff-avatar.png';
+        $scope.staff.available = false;
+        $scope.staff.photos = [];
+        $scope.staff.towns = [];
+
+        $scope.addTown = function (town) {
+            var pos = $scope.staff.towns.indexOf(town);
+            if (pos == -1) {
+                $scope.staff.towns.push(town);
+                $scope.staff.towns.sort();
+            }
+            else {
+                $scope.staff.towns.splice(pos, 1);
+            }
+        };
+
+        $scope.onFileSelect = function ($files) {
+            //$files: an array of files selected, each file has name, size, and type.
+            for (var i = 0; i < $files.length; i++) {
+                var file = $files[i];
+                $scope.upload = $upload.upload({
+                    url: options.api.base_url + '/img/',
+                    method: 'POST',
+                    file: file
+                }).progress(function (evt) {
+                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                }).success(function (data, status, headers, config) {
+                    var imgName = $scope.staff.avatar.split('/').reverse()[0];
+                    StaffService.imgClean(imgName).success(function () {
+                        console.log('success deleted ' + imgName);
+                    });
+                    $scope.staff.avatar = options.url + '/img/uploads/' + data.name;
+                    console.log(data);
+                });
+            }post
+        };
+
+        $scope.createStaff = function () {
+            StaffService.createStaff($scope.staff).success(function () {
+                $rootScope.toEditList();
+            });
+        };
+
+        $scope.cancelChanges = function () {
+            $rootScope.toEditList();
+        };
     }
 ]);
 
@@ -201,6 +250,7 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
             var pos = $scope.staff.towns.indexOf(town);
             if (pos == -1) {
                 $scope.staff.towns.push(town);
+                $scope.staff.towns.sort();
             }
             else {
                 $scope.staff.towns.splice(pos, 1);
@@ -227,8 +277,19 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
                 });
             }
         };
+
+        $scope.updateStaff = function () {
+            StaffService.updateStaff($scope.staff).success(function () {
+                $rootScope.toEditList();
+            });
+        };
+
+        $scope.cancelChanges = function () {
+            $rootScope.toEditList();
+        };
     }
 ]);
+
 appControllers.controller('MediaPartnersCtrl', ['$rootScope', '$scope', '$location', '$window',
     function ($rootScope, $scope, $location, $window) {
         $rootScope.header = 'Ludus - Медиапартнёры';
@@ -616,6 +677,12 @@ appServices.factory('StaffService', function ($http) {
         },
         getOne: function (id) {
             return $http.get(options.api.base_url + '/shop/' + id);
+        },
+        updateStaff: function (staff) {
+            return $http.put(options.api.base_url + '/shop/' + staff.id, staff);
+        },
+        createStaff: function (staff) {
+            return $http.post(options.api.base_url + '/shop/', staff);
         },
         imgClean: function (name) {
             return $http.delete(options.api.base_url + '/img/delete', {headers: {filename: name}});
