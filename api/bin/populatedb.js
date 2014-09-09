@@ -24,7 +24,7 @@ function createSampleStaff() {
             available: true,
             price: 112,
             towns: ["Харьков"],
-            photos: ['Фото арбузика1', 'Фото арбузика2']
+            photos: ['http://localhost:3000/img/tidehunter1.jpg', 'http://localhost:3000/img/tidehunter2.jpg']
         }),
         staff2 = ({
             name: 'Tidehunter',

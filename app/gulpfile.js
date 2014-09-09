@@ -20,6 +20,7 @@ var paths = {
     template: ['template/**/*.html'],
     css: ['css/**/*.css', 'css/**/*.map'],
     angular: ['lib/angular/angular.min.js'],
+    imageJs: ['custom-js/jquery.fancybox.pack.js'],
     uploadFile: ['lib/ng-file-upload/angular-file-upload-shim.min.js', 'lib/ng-file-upload/angular-file-upload.min.js'],
     jquery: ['lib/jquery/dist/jquery.min.js'],
     bootstrap: ['lib/bootstrap/dist/js/bootstrap.min.js'],
@@ -75,7 +76,7 @@ gulp.task('index', function () {
         .pipe(gulp.dest(paths.dist));
 });
 gulp.task('libs', function () {
-    return gulp.src(paths.angular.concat(paths.jquery, paths.angular_route, paths.bootstrap, paths.uploadFile, paths.scriptsMap))
+    return gulp.src(paths.angular.concat(paths.jquery, paths.angular_route, paths.bootstrap, paths.uploadFile, paths.scriptsMap, paths.imageJs))
         .pipe(gulp.dest(paths.dist + 'js'));
 });
 
