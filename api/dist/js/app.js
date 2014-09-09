@@ -205,7 +205,7 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
             }
         };
 
-        $scope.onFileSelect = function ($files) {
+        $scope.onFileSelect = function ($files, isAvatar) {
             //$files: an array of files selected, each file has name, size, and type.
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
@@ -216,14 +216,20 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
                 }).progress(function (evt) {
                     console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                 }).success(function (data, status, headers, config) {
-                    var imgName = $scope.staff.avatar.split('/').reverse()[0];
-                    StaffService.imgClean(imgName).success(function () {
-                        console.log('success deleted ' + imgName);
-                    });
-                    $scope.staff.avatar = options.url + '/img/uploads/' + data.name;
+                    if (isAvatar) {
+                        var imgName = $scope.staff.avatar.split('/').reverse()[0];
+                        StaffService.imgClean(imgName).success(function () {
+                            console.log('success deleted ' + imgName);
+                        });
+                        $scope.staff.avatar = options.url + '/img/uploads/' + data.name;
+                    }
+                    else{
+                        $scope.staff.photos.push(options.url + '/img/uploads/' + data.name);
+                    }
                     console.log(data);
                 });
-            }post
+            }
+            post
         };
 
         $scope.createStaff = function () {
@@ -257,7 +263,7 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
             }
         };
 
-        $scope.onFileSelect = function ($files) {
+        $scope.onFileSelect = function ($files, isAvatar) {
             //$files: an array of files selected, each file has name, size, and type.
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
@@ -268,11 +274,16 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
                 }).progress(function (evt) {
                     console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                 }).success(function (data, status, headers, config) {
-                    var imgName = $scope.staff.avatar.split('/').reverse()[0];
-                    StaffService.imgClean(imgName).success(function () {
-                        console.log('success deleted ' + imgName);
-                    });
-                    $scope.staff.avatar = options.url + '/img/uploads/' + data.name;
+                    if (isAvatar) {
+                        var imgName = $scope.staff.avatar.split('/').reverse()[0];
+                        StaffService.imgClean(imgName).success(function () {
+                            console.log('success deleted ' + imgName);
+                        });
+                        $scope.staff.avatar = options.url + '/img/uploads/' + data.name;
+                    }
+                    else{
+                        $scope.staff.photos.push(options.url + '/img/uploads/' + data.name);
+                    }
                     console.log(data);
                 });
             }
