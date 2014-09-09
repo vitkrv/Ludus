@@ -17,6 +17,16 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <img class="img-responsive" ng-src="{{staff.avatar}}"/>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="file" ng-file-select="onFileSelect($files)">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="col-md-9">
                         <input type="text" class="form-control" placeholder="Название" ng-model="staff.name" required
                                autofocus>

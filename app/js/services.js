@@ -26,6 +26,9 @@ appServices.factory('StaffService', function ($http) {
         },
         getOne: function (id) {
             return $http.get(options.api.base_url + '/shop/' + id);
+        },
+        imgClean: function (name) {
+            return $http.delete(options.api.base_url + '/img/delete', {headers: {filename: name}});
         }
     };
 });

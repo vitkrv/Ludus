@@ -2,6 +2,7 @@ var _ = require('underscore'),
     express = require('express'),
     auth = require('./auth'),
     authHandlers = require('../handlers/authHandlers'),
+    imageHandlers = require('../handlers/imageHandlers'),
     shopHandlers = require('../handlers/shopHandler');
 
 
@@ -16,6 +17,10 @@ module.exports.setup = function (app) {
             r.get('/token', authHandlers.token);
         }));
 
+        v1.use('/img', withRouter(auth.requireAuth, function (r) {
+            r.post('/', imageHandlers.create);
+            r.delete('/delete', imageHandlers.delete);
+        }));
         v1.use('/shop', withRouter(auth.requireAuth, function (r) {
             r.post('/', shopHandlers.create);
             r.put('/:id', shopHandlers.update);

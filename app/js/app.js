@@ -66,6 +66,7 @@ app.config(function ($httpProvider) {
 
 app.run(function ($rootScope, $location, $window, AuthenticationService) {
     options.api.base_url = $location.protocol() + "://" + $location.host() + ":" + $location.port() + "/v1";
+    options.url = $location.protocol() + "://" + $location.host() + ":" + $location.port();
     $rootScope.location = $location;
     $rootScope.isAdmin = $window.sessionStorage;
     $rootScope.allTowns = ['Харьков', 'Днепропетровск', 'Ужгород'];
@@ -77,27 +78,33 @@ app.run(function ($rootScope, $location, $window, AuthenticationService) {
             nextRoute.access !== null &&
             nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token) {
 
-            $location.path("/");
+            $rootScope.toMain();
         }
     });
 
     // nav bar
     $rootScope.toShop = function () {
+        $location.$$search = {};
         $location.path("/shop");
     };
     $rootScope.toPubstomps = function () {
+        $location.$$search = {};
         $location.path("/pubstomps");
     };
     $rootScope.toAbout = function () {
+        $location.$$search = {};
         $location.path("/about");
     };
     $rootScope.toSponsors = function () {
+        $location.$$search = {};
         $location.path("/sponsors");
     };
     $rootScope.toMediapartners = function () {
+        $location.$$search = {};
         $location.path("/mediapartners");
     };
     $rootScope.toMain = function () {
+        $location.$$search = {};
         $location.path("/");
     };
 

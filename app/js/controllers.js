@@ -88,20 +88,22 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
             }
         };
 
-        $scope.onFileSelect = function($files) {
+        $scope.onFileSelect = function ($files) {
             //$files: an array of files selected, each file has name, size, and type.
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
                 $scope.upload = $upload.upload({
-                    url: 'server/upload/url',
-                    //method: 'POST' or 'PUT',
-                    //headers: {'header-key': 'header-value'},
-                    //withCredentials: true,
-                    file: file // or list of files ($files) for html5 only
-                }).progress(function(evt) {
+                    url: options.api.base_url + '/img/',
+                    method: 'POST',
+                    file: file
+                }).progress(function (evt) {
                     console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                }).success(function(data, status, headers, config) {
-                    // file is uploaded successfully
+                }).success(function (data, status, headers, config) {
+                    var imgName = $scope.staff.avatar.split('/').reverse()[0];
+                    StaffService.imgClean(imgName).success(function () {
+                        console.log('success deleted ' + imgName);
+                    });
+                    $scope.staff.avatar = options.url + '/img/uploads/' + data.name;
                     console.log(data);
                 });
             }

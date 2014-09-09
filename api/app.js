@@ -1,8 +1,11 @@
 var domain = require('domain'),
-    express = require('express');
+    express = require('express'),
+    winston = require('winston');
 
 var routes = require('./core/mainRoutes'),
-    cors = require('./core/cors');
+    auth = require('./core/auth'),
+    cors = require('./core/cors'),
+    db = require('./core/mongoose');
 
 function setupHttpDefaultMiddleware(app) {
     var path = require('path');
@@ -10,11 +13,18 @@ function setupHttpDefaultMiddleware(app) {
     var logger = require('morgan');
     var cookieParser = require('cookie-parser');
     var bodyParser = require('body-parser');
+    var multer = require('multer');
 
     app.use(favicon());
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded());
+    app.use(multer({
+        dest: './dist/img/uploads/',
+        rename: function (fieldname, filename) {
+            return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+        }
+    }));
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, '/dist')));
 }
@@ -53,6 +63,11 @@ function setupErrorHandlers(app) {
         });
     });
 }
+function initDatabase(app){
+    db.init(function (err) {
+        if(!err) { winston.info('Models are loaded!'); }
+    });
+}
 
 function appBuilder() {
     var app = express();
@@ -68,9 +83,11 @@ function appBuilder() {
         instance: app,
         withDefaultHttpMiddleware: _with(setupHttpDefaultMiddleware),
         withCors: _with(cors.setup),
+        withAppAuth: _with(auth.setup),
         withAppRoutes: _with(routes.setup),
         with404Handler: _with(setup404Handler),
-        withErrorHandlers: _with(setupErrorHandlers)
+        withErrorHandlers: _with(setupErrorHandlers),
+        withInitDatabase: _with(initDatabase)
     };
 }
 
@@ -81,9 +98,11 @@ module.exports.defaultSetup = function () {
     return appBuilder()
         .withDefaultHttpMiddleware()
         .withCors()
+        .withAppAuth()
         .withAppRoutes()
         .with404Handler()
         .withErrorHandlers()
+        .withInitDatabase()
         .instance
         ;
 };

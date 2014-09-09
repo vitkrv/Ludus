@@ -66,6 +66,7 @@ app.config(function ($httpProvider) {
 
 app.run(function ($rootScope, $location, $window, AuthenticationService) {
     options.api.base_url = $location.protocol() + "://" + $location.host() + ":" + $location.port() + "/v1";
+    options.url = $location.protocol() + "://" + $location.host() + ":" + $location.port();
     $rootScope.location = $location;
     $rootScope.isAdmin = $window.sessionStorage;
     $rootScope.allTowns = ['Харьков', 'Днепропетровск', 'Ужгород'];
@@ -77,27 +78,33 @@ app.run(function ($rootScope, $location, $window, AuthenticationService) {
             nextRoute.access !== null &&
             nextRoute.access.requiredAuthentication && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token) {
 
-            $location.path("/");
+            $rootScope.toMain();
         }
     });
 
     // nav bar
     $rootScope.toShop = function () {
+        $location.$$search = {};
         $location.path("/shop");
     };
     $rootScope.toPubstomps = function () {
+        $location.$$search = {};
         $location.path("/pubstomps");
     };
     $rootScope.toAbout = function () {
+        $location.$$search = {};
         $location.path("/about");
     };
     $rootScope.toSponsors = function () {
+        $location.$$search = {};
         $location.path("/sponsors");
     };
     $rootScope.toMediapartners = function () {
+        $location.$$search = {};
         $location.path("/mediapartners");
     };
     $rootScope.toMain = function () {
+        $location.$$search = {};
         $location.path("/");
     };
 
@@ -200,20 +207,22 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
             }
         };
 
-        $scope.onFileSelect = function($files) {
+        $scope.onFileSelect = function ($files) {
             //$files: an array of files selected, each file has name, size, and type.
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
                 $scope.upload = $upload.upload({
-                    url: 'server/upload/url',
-                    //method: 'POST' or 'PUT',
-                    //headers: {'header-key': 'header-value'},
-                    //withCredentials: true,
-                    file: file // or list of files ($files) for html5 only
-                }).progress(function(evt) {
+                    url: options.api.base_url + '/img/',
+                    method: 'POST',
+                    file: file
+                }).progress(function (evt) {
                     console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                }).success(function(data, status, headers, config) {
-                    // file is uploaded successfully
+                }).success(function (data, status, headers, config) {
+                    var imgName = $scope.staff.avatar.split('/').reverse()[0];
+                    StaffService.imgClean(imgName).success(function () {
+                        console.log('success deleted ' + imgName);
+                    });
+                    $scope.staff.avatar = options.url + '/img/uploads/' + data.name;
                     console.log(data);
                 });
             }
@@ -607,6 +616,9 @@ appServices.factory('StaffService', function ($http) {
         },
         getOne: function (id) {
             return $http.get(options.api.base_url + '/shop/' + id);
+        },
+        imgClean: function (name) {
+            return $http.delete(options.api.base_url + '/img/delete', {headers: {filename: name}});
         }
     };
 });
