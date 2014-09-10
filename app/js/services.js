@@ -27,6 +27,9 @@ appServices.factory('StaffService', function ($http) {
         getOne: function (id) {
             return $http.get(options.api.base_url + '/shop/' + id);
         },
+        delete: function (id) {
+            return $http.delete(options.api.base_url + '/shop/' + id);
+        },
         updateStaff: function (staff) {
             return $http.put(options.api.base_url + '/shop/' + staff.id, staff);
         },

@@ -39,6 +39,10 @@ app.config(['$locationProvider', '$routeProvider',
                 templateUrl: 'partials/shop.html',
                 controller: 'ShopCtrl'
             }).
+            when('/shop/staff', {
+                templateUrl: 'partials/shopItem.html',
+                controller: 'ShopItemCtrl'
+            }).
             when('/mediapartners', {
                 templateUrl: 'partials/mediapartners.html',
                 controller: 'MediaPartnersCtrl'

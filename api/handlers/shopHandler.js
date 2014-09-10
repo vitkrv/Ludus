@@ -136,22 +136,22 @@ var handlers = {
         });
     },
     remove: function (req, res, next) {
-       /* var id;
+        var id;
         try {
             id = mongoose.Types.ObjectId(req.params.id);
         }
         catch (e) {
-            res.send(new routeErrors.HighwayNotFoundError(), 404);
+            res.send(new routeErrors.StaffNotFoundError(), 404);
             return next();
         }
 
-        Highway.remove({_id: id}, function (err, data) {
+        Staff.remove({_id: id}, function (err, data) {
             if (err) return next(err);
             if (data)
                 res.send(204);
             else
-                res.send(new routeErrors.HighwayNotFoundError(), 404);
-        });*/
+                res.send(new routeErrors.StaffNotFoundError(), 404);
+        });
     }
 };
 

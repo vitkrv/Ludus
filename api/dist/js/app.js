@@ -39,6 +39,10 @@ app.config(['$locationProvider', '$routeProvider',
                 templateUrl: 'partials/shop.html',
                 controller: 'ShopCtrl'
             }).
+            when('/shop/staff', {
+                templateUrl: 'partials/shopItem.html',
+                controller: 'ShopItemCtrl'
+            }).
             when('/mediapartners', {
                 templateUrl: 'partials/mediapartners.html',
                 controller: 'MediaPartnersCtrl'
@@ -166,6 +170,20 @@ appControllers.controller('ShopCtrl', ['$rootScope', '$scope', '$location', '$wi
         StaffService.list().success(function (data) {
             $scope.staff = StaffService.prettyArray(data.staffs);
         });
+
+        $scope.describe = function (id) {
+            $location.path('/shop/staff').search('id', id);
+        };
+    }
+]);
+appControllers.controller('ShopItemCtrl', ['$rootScope', '$scope', '$location', '$window', '$routeParams', 'StaffService',
+    function ($rootScope, $scope, $location, $window, $routeParams, StaffService) {
+        $rootScope.header = 'Ludus - Магазин';
+        $scope.staff = {};
+
+        StaffService.getOne($routeParams.id).success(function (data) {
+            $scope.staff = StaffService.pretty(data);
+        });
     }
 ]);
 
@@ -180,6 +198,13 @@ appControllers.controller('StaffCtrl', ['$rootScope', '$scope', '$location', '$w
 
         $scope.edit = function (id) {
             $location.path('/admin/staff/edit').search('staffId', id);
+        };
+        $scope.deleteStaff = function (id) {
+            StaffService.delete(id).success(function () {
+                StaffService.fulList().success(function (data) {
+                    $scope.staffs = StaffService.prettyArray(data.staffs);
+                });
+            });
         };
     }
 ]);
@@ -223,7 +248,7 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
                         });
                         $scope.staff.avatar = options.url + '/img/uploads/' + data.name;
                     }
-                    else{
+                    else {
                         $scope.staff.photos.push(options.url + '/img/uploads/' + data.name);
                     }
                     console.log(data);
@@ -281,7 +306,7 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
                         });
                         $scope.staff.avatar = options.url + '/img/uploads/' + data.name;
                     }
-                    else{
+                    else {
                         $scope.staff.photos.push(options.url + '/img/uploads/' + data.name);
                     }
                     console.log(data);
@@ -304,6 +329,7 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
 appControllers.controller('MediaPartnersCtrl', ['$rootScope', '$scope', '$location', '$window',
     function ($rootScope, $scope, $location, $window) {
         $rootScope.header = 'Ludus - Медиапартнёры';
+
     }
 ]);
 appControllers.controller('SponsorsCtrl', ['$rootScope', '$scope', '$location', '$window',
@@ -688,6 +714,9 @@ appServices.factory('StaffService', function ($http) {
         },
         getOne: function (id) {
             return $http.get(options.api.base_url + '/shop/' + id);
+        },
+        delete: function (id) {
+            return $http.delete(options.api.base_url + '/shop/' + id);
         },
         updateStaff: function (staff) {
             return $http.put(options.api.base_url + '/shop/' + staff.id, staff);

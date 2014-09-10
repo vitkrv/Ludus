@@ -1,5 +1,9 @@
 <div class="container-fluid">
     <div class="row">
+        <h1 class="text-center">Магазин</h1>
+    </div>
+    <hr>
+    <div class="row">
         <div class="col-xs-12 col-md-6" ng-repeat="item in staff">
             <div class="thumbnail">
                 <img ng-src="{{item.avatar}}"/>
@@ -18,7 +22,13 @@
 
                     <p>Описание:
 
-                    <p>{{item.description}}</p></p>
+                    <p>{{item.description}}</p>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-success pull-right" ng-click="describe(item.id)">Подробнее...</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
