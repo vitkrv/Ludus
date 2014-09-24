@@ -219,16 +219,10 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
         $scope.staff.photos = [];
         $scope.staff.towns = [];
 
-        $scope.addTown = function (town) {
-            var pos = $scope.staff.towns.indexOf(town);
-            if (pos == -1) {
-                $scope.staff.towns.push(town);
-                $scope.staff.towns.sort();
-            }
-            else {
-                $scope.staff.towns.splice(pos, 1);
-            }
-        };
+        $scope.addTown = StaffService.addTown;
+        $scope.cancelChanges = StaffService.cancelChanges;
+        $scope.deletePhoto = StaffService.deletePhoto;
+        $scope.addPhotoFromUrl = StaffService.addPhotoFromUrl;
 
         $scope.onFileSelect = function ($files, isAvatar) {
             //$files: an array of files selected, each file has name, size, and type.
@@ -254,17 +248,12 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
                     console.log(data);
                 });
             }
-            post
         };
 
         $scope.createStaff = function () {
             StaffService.createStaff($scope.staff).success(function () {
                 $rootScope.toEditList();
             });
-        };
-
-        $scope.cancelChanges = function () {
-            $rootScope.toEditList();
         };
     }
 ]);
@@ -273,20 +262,14 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
     function ($rootScope, $scope, $location, $window, $upload, $routeParams, StaffService) {
         $rootScope.header = 'Ludus - Редактировать';
 
+        $scope.addTown = StaffService.addTown;
+        $scope.cancelChanges = StaffService.cancelChanges;
+        $scope.deletePhoto = StaffService.deletePhoto;
+        $scope.addPhotoFromUrl = StaffService.addPhotoFromUrl;
+
         StaffService.getOne($routeParams.staffId).success(function (data) {
             $scope.staff = data;
         });
-
-        $scope.addTown = function (town) {
-            var pos = $scope.staff.towns.indexOf(town);
-            if (pos == -1) {
-                $scope.staff.towns.push(town);
-                $scope.staff.towns.sort();
-            }
-            else {
-                $scope.staff.towns.splice(pos, 1);
-            }
-        };
 
         $scope.onFileSelect = function ($files, isAvatar) {
             //$files: an array of files selected, each file has name, size, and type.
@@ -318,10 +301,6 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
             StaffService.updateStaff($scope.staff).success(function () {
                 $rootScope.toEditList();
             });
-        };
-
-        $scope.cancelChanges = function () {
-            $rootScope.toEditList();
         };
     }
 ]);
@@ -359,6 +338,19 @@ appDirectives.directive('sortArrow', [
             });
         };
     }]);
+appDirectives.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
 appFilters.filter('shopFilter', function(){
         return function(array, expression, comparator) {
             if (!angular.isArray(array)) return array;
@@ -686,7 +678,7 @@ angular.module('ui.bootstrap.pagination', [])
         };
     }]);
 /* global angular: false */
-appServices.factory('StaffService', function ($http) {
+appServices.factory('StaffService', function ($http, $rootScope) {
     return {
         pretty: function (item) {
             var maxInRow = 22;
@@ -726,6 +718,25 @@ appServices.factory('StaffService', function ($http) {
         },
         imgClean: function (name) {
             return $http.delete(options.api.base_url + '/img/delete', {headers: {filename: name}});
+        },
+        addTown: function (staff, town) {
+            var pos = staff.towns.indexOf(town);
+            if (pos == -1) {
+                staff.towns.push(town);
+                staff.towns.sort();
+            }
+            else {
+                staff.towns.splice(pos, 1);
+            }
+        },
+        cancelChanges: function () {
+            $rootScope.toEditList();
+        },
+        deletePhoto: function (array, index) {
+            array.splice(index, 1);
+        },
+        addPhotoFromUrl: function (array, url) {
+            array.push(url);
         }
     };
 });

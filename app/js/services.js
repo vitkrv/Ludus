@@ -1,4 +1,4 @@
-appServices.factory('StaffService', function ($http) {
+appServices.factory('StaffService', function ($http, $rootScope) {
     return {
         pretty: function (item) {
             var maxInRow = 22;
@@ -38,6 +38,25 @@ appServices.factory('StaffService', function ($http) {
         },
         imgClean: function (name) {
             return $http.delete(options.api.base_url + '/img/delete', {headers: {filename: name}});
+        },
+        addTown: function (staff, town) {
+            var pos = staff.towns.indexOf(town);
+            if (pos == -1) {
+                staff.towns.push(town);
+                staff.towns.sort();
+            }
+            else {
+                staff.towns.splice(pos, 1);
+            }
+        },
+        cancelChanges: function () {
+            $rootScope.toEditList();
+        },
+        deletePhoto: function (array, index) {
+            array.splice(index, 1);
+        },
+        addPhotoFromUrl: function (array, url) {
+            array.push(url);
         }
     };
 });

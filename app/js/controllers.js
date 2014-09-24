@@ -95,16 +95,10 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
         $scope.staff.photos = [];
         $scope.staff.towns = [];
 
-        $scope.addTown = function (town) {
-            var pos = $scope.staff.towns.indexOf(town);
-            if (pos == -1) {
-                $scope.staff.towns.push(town);
-                $scope.staff.towns.sort();
-            }
-            else {
-                $scope.staff.towns.splice(pos, 1);
-            }
-        };
+        $scope.addTown = StaffService.addTown;
+        $scope.cancelChanges = StaffService.cancelChanges;
+        $scope.deletePhoto = StaffService.deletePhoto;
+        $scope.addPhotoFromUrl = StaffService.addPhotoFromUrl;
 
         $scope.onFileSelect = function ($files, isAvatar) {
             //$files: an array of files selected, each file has name, size, and type.
@@ -130,17 +124,12 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
                     console.log(data);
                 });
             }
-            post
         };
 
         $scope.createStaff = function () {
             StaffService.createStaff($scope.staff).success(function () {
                 $rootScope.toEditList();
             });
-        };
-
-        $scope.cancelChanges = function () {
-            $rootScope.toEditList();
         };
     }
 ]);
@@ -149,20 +138,14 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
     function ($rootScope, $scope, $location, $window, $upload, $routeParams, StaffService) {
         $rootScope.header = 'Ludus - Редактировать';
 
+        $scope.addTown = StaffService.addTown;
+        $scope.cancelChanges = StaffService.cancelChanges;
+        $scope.deletePhoto = StaffService.deletePhoto;
+        $scope.addPhotoFromUrl = StaffService.addPhotoFromUrl;
+
         StaffService.getOne($routeParams.staffId).success(function (data) {
             $scope.staff = data;
         });
-
-        $scope.addTown = function (town) {
-            var pos = $scope.staff.towns.indexOf(town);
-            if (pos == -1) {
-                $scope.staff.towns.push(town);
-                $scope.staff.towns.sort();
-            }
-            else {
-                $scope.staff.towns.splice(pos, 1);
-            }
-        };
 
         $scope.onFileSelect = function ($files, isAvatar) {
             //$files: an array of files selected, each file has name, size, and type.
@@ -194,10 +177,6 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
             StaffService.updateStaff($scope.staff).success(function () {
                 $rootScope.toEditList();
             });
-        };
-
-        $scope.cancelChanges = function () {
-            $rootScope.toEditList();
         };
     }
 ]);
