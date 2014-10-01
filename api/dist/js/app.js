@@ -1,5 +1,5 @@
 var app = angular.module('app',
-    ['ngRoute', 'appControllers', 'appServices', 'appDirectives', 'appFilters', 'ui.bootstrap.pagination', 'angularFileUpload', 'ui.bootstrap']);
+    ['ngRoute', 'appControllers', 'appServices', 'appDirectives', 'appFilters', 'angularFileUpload', 'ui.bootstrap', 'duScroll']);
 
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
@@ -86,29 +86,34 @@ app.run(function ($rootScope, $location, $window, AuthenticationService) {
         }
     });
 
+    function beforeChangeLocation() {
+        $location.$$search = {};
+        $location.hash('');
+    }
+
     // nav bar
     $rootScope.toShop = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/shop");
     };
     $rootScope.toPubstomps = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/pubstomps");
     };
     $rootScope.toAbout = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/about");
     };
     $rootScope.toSponsors = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/sponsors");
     };
     $rootScope.toMediapartners = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/mediapartners");
     };
     $rootScope.toMain = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/");
     };
 
@@ -117,7 +122,7 @@ app.run(function ($rootScope, $location, $window, AuthenticationService) {
         $location.path("/admin/staff/create");
     };
     $rootScope.toEditList = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/admin/staff/");
     };
 });
@@ -321,17 +326,28 @@ appControllers.controller('AboutCtrl', ['$rootScope', '$scope', '$location', '$w
         $rootScope.header = 'Ludus - Контакты';
     }
 ]);
-appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location', '$window',
-    function ($rootScope, $scope, $location, $window) {
+appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location', '$document',
+    function ($rootScope, $scope, $location, $document) {
         $rootScope.header = 'Ludus - Пабстомпы';
+        var offset = 70;
+        var duration = 1000;
+        var tabsElement = angular.element(document.getElementById('tabs'));
+
         $scope.regionClick = function (id) {
-            console.log(id);
+            for (var j = 0; j < $scope.tabs.length; j++) {
+                if ($scope.tabs[j].id === id) {
+                    $scope.tabs[j].active = true;
+                    $document.scrollToElement(tabsElement, offset, duration);
+                    break;
+                }
+            }
         };
+
         $scope.tabs = [
-            {header: "Харьков"},
-            {header: "Ужгород"},
-            {header: "Львов"},
-            {header: "Одесса"}
+            {header: "Харьков", id: 'UKR-328'},
+            {header: "Ужгород", id: 'UKR-329'},
+            {header: "Львов", id: 'UKR-325'},
+            {header: "Одесса", id: 'UKR-322'}
         ];
     }
 ]);
@@ -368,8 +384,8 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
             link: function (scope, element, attrs) {
                 var mapScale = 4.35;
                 var mapRatio = .65;
-                var width = 300;
-                var height = 300 * mapRatio;
+                var width = 855;
+                var height = width * mapRatio;
 
                 var projection = d3.geo.albers()
                     .center([0, 48.5])
@@ -417,9 +433,9 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
                         .attr('id', function (d) {
                             return d.id;
                         })
-                        .style('fill', function (d) {
+                        /*.style('fill', function (d) {
                             return color(d.properties.percent);
-                        });
+                        });*/
 
                     var ukraineRegionBoundaries = topojson.mesh(data,
                         data.objects['ukraine-regions'], function (a, b) {
@@ -442,6 +458,11 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
                         .attr('class', 'ukraine-boundary')
 
                     d3.select($window).on('resize', resize);
+                    angular.element($window).trigger('resize');
+                    resize();
+
+                    element.removeAttr("ukraine-map");
+                    $compile(element[0])(scope);
                 });
 
                 function resize() {
@@ -459,9 +480,6 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
                         .scale(width * mapScale)
                         .translate([width / 2, height / 2]);
                 }
-
-                element.removeAttr("ukraine-map");
-                $compile(element)(scope);
             }}
     }]);
 appFilters.filter('shopFilter', function(){

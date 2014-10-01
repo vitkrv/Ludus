@@ -1,5 +1,5 @@
 var app = angular.module('app',
-    ['ngRoute', 'appControllers', 'appServices', 'appDirectives', 'appFilters', 'ui.bootstrap.pagination', 'angularFileUpload', 'ui.bootstrap']);
+    ['ngRoute', 'appControllers', 'appServices', 'appDirectives', 'appFilters', 'angularFileUpload', 'ui.bootstrap', 'duScroll']);
 
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
@@ -86,29 +86,34 @@ app.run(function ($rootScope, $location, $window, AuthenticationService) {
         }
     });
 
+    function beforeChangeLocation() {
+        $location.$$search = {};
+        $location.hash('');
+    }
+
     // nav bar
     $rootScope.toShop = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/shop");
     };
     $rootScope.toPubstomps = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/pubstomps");
     };
     $rootScope.toAbout = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/about");
     };
     $rootScope.toSponsors = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/sponsors");
     };
     $rootScope.toMediapartners = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/mediapartners");
     };
     $rootScope.toMain = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/");
     };
 
@@ -117,7 +122,7 @@ app.run(function ($rootScope, $location, $window, AuthenticationService) {
         $location.path("/admin/staff/create");
     };
     $rootScope.toEditList = function () {
-        $location.$$search = {};
+        beforeChangeLocation();
         $location.path("/admin/staff/");
     };
 });

@@ -197,17 +197,28 @@ appControllers.controller('AboutCtrl', ['$rootScope', '$scope', '$location', '$w
         $rootScope.header = 'Ludus - Контакты';
     }
 ]);
-appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location', '$window',
-    function ($rootScope, $scope, $location, $window) {
+appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location', '$document',
+    function ($rootScope, $scope, $location, $document) {
         $rootScope.header = 'Ludus - Пабстомпы';
+        var offset = 70;
+        var duration = 1000;
+        var tabsElement = angular.element(document.getElementById('tabs'));
+
         $scope.regionClick = function (id) {
-            console.log(id);
+            for (var j = 0; j < $scope.tabs.length; j++) {
+                if ($scope.tabs[j].id === id) {
+                    $scope.tabs[j].active = true;
+                    $document.scrollToElement(tabsElement, offset, duration);
+                    break;
+                }
+            }
         };
+
         $scope.tabs = [
-            {header: "Харьков"},
-            {header: "Ужгород"},
-            {header: "Львов"},
-            {header: "Одесса"}
+            {header: "Харьков", id: 'UKR-328'},
+            {header: "Ужгород", id: 'UKR-329'},
+            {header: "Львов", id: 'UKR-325'},
+            {header: "Одесса", id: 'UKR-322'}
         ];
     }
 ]);

@@ -27,7 +27,8 @@ var paths = {
     jquery: ['lib/jquery/dist/jquery.min.js'],
     bootstrap: ['lib/bootstrap/dist/js/bootstrap.min.js'],
     angular_bootstrap: ['lib/angular-bootstrap/ui-bootstrap.min.js', 'lib/angular-bootstrap/ui-bootstrap-tpls.min.js'],
-    angular_route: ['lib/angular-route/angular-route.min.js']
+    angular_route: ['lib/angular-route/angular-route.min.js'],
+    angular_scroll: ['lib/angular-scroll/angular-scroll.min.js']
 };
 
 // with watchers
@@ -79,7 +80,7 @@ gulp.task('index', function () {
         .pipe(gulp.dest(paths.dist));
 });
 gulp.task('libs', function () {
-    return gulp.src(paths.angular.concat(paths.jquery, paths.angular_route, paths.bootstrap, paths.uploadFile, paths.scriptsMap, paths.imageJs, paths.angular_bootstrap))
+    return gulp.src(paths.angular.concat(paths.angular_scroll, paths.jquery, paths.angular_route, paths.bootstrap, paths.uploadFile, paths.scriptsMap, paths.imageJs, paths.angular_bootstrap))
         .pipe(gulp.dest(paths.dist + 'js'));
 });
 

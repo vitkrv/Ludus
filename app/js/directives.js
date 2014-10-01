@@ -30,8 +30,8 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
             link: function (scope, element, attrs) {
                 var mapScale = 4.35;
                 var mapRatio = .65;
-                var width = 300;
-                var height = 300 * mapRatio;
+                var width = 855;
+                var height = width * mapRatio;
 
                 var projection = d3.geo.albers()
                     .center([0, 48.5])
@@ -79,9 +79,9 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
                         .attr('id', function (d) {
                             return d.id;
                         })
-                        .style('fill', function (d) {
+                        /*.style('fill', function (d) {
                             return color(d.properties.percent);
-                        });
+                        });*/
 
                     var ukraineRegionBoundaries = topojson.mesh(data,
                         data.objects['ukraine-regions'], function (a, b) {
@@ -104,6 +104,11 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
                         .attr('class', 'ukraine-boundary')
 
                     d3.select($window).on('resize', resize);
+                    angular.element($window).trigger('resize');
+                    resize();
+
+                    element.removeAttr("ukraine-map");
+                    $compile(element[0])(scope);
                 });
 
                 function resize() {
@@ -121,8 +126,5 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
                         .scale(width * mapScale)
                         .translate([width / 2, height / 2]);
                 }
-
-                element.removeAttr("ukraine-map");
-                $compile(element)(scope);
             }}
     }]);
