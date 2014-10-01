@@ -13,22 +13,26 @@
 
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src="js/angular-file-upload-shim.min.js"></script>
     <script src="js/angular.min.js"></script>
     <script src="js/angular-file-upload.min.js"></script>
     <script src="js/angular-route.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/ui-bootstrap.min.js"></script>
+    <script src="js/ui-bootstrap-tpls.min.js"></script>
 </head>
 <body>
 
 <div ng-include="'partials/navbar.html'"></div>
 <div ng-include="'partials/jumbotron.html'"></div>
-<div ng-include="'partials/social.html'"></div>
+<div ng-include="'partials/social.html'" class="social-margin"></div>
 
 
 <div class="container">
 
-    <div class="col-sm-12 col-md-12">
+    <div class="col-sm-12 col-md-9">
         <div ng-view></div>
     </div>
 

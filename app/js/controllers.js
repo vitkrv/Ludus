@@ -58,7 +58,7 @@ appControllers.controller('ShopItemCtrl', ['$rootScope', '$scope', '$location', 
         $scope.staff = {};
 
         StaffService.getOne($routeParams.id).success(function (data) {
-            $scope.staff = StaffService.pretty(data);
+            $scope.staff = data;
         });
     }
 ]);
@@ -200,5 +200,14 @@ appControllers.controller('AboutCtrl', ['$rootScope', '$scope', '$location', '$w
 appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location', '$window',
     function ($rootScope, $scope, $location, $window) {
         $rootScope.header = 'Ludus - Пабстомпы';
+        $scope.regionClick = function (id) {
+            console.log(id);
+        };
+        $scope.tabs = [
+            {header: "Харьков"},
+            {header: "Ужгород"},
+            {header: "Львов"},
+            {header: "Одесса"}
+        ];
     }
 ]);

@@ -1,5 +1,5 @@
 {
     "mongoose": {
-        "uri": "mongodb://nodejitsu:cf04b0afce987c205071ce282c13f7e7@troup.mongohq.com:10005/nodejitsudb7675335484"
+        "uri": "mongodb://vitkrv:180492As@ds037990.mongolab.com:37990/ludus-prod"
     }
 }

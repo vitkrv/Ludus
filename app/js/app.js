@@ -1,5 +1,5 @@
 var app = angular.module('app',
-    ['ngRoute', 'appControllers', 'appServices', 'appDirectives', 'appFilters', 'ui.bootstrap.pagination', 'angularFileUpload']);
+    ['ngRoute', 'appControllers', 'appServices', 'appDirectives', 'appFilters', 'ui.bootstrap.pagination', 'angularFileUpload', 'ui.bootstrap']);
 
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);

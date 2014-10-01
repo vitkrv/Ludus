@@ -97,18 +97,27 @@ th input[type="number"]{
 .pagination-holder { text-align: center; }
 .modal-body { text-align: center; }
 
-/*forgot password*/
-.form-reset-password input[type="text"]:last-of-type{
-    margin-bottom: 10px;
-}
-.forgot-password{
-    margin-top: 6px;
-    margin-bottom: 13px;
-}
-.forgot-password a{
-    color: rgb(255, 255, 255);
-    text-decoration: underline;
-}
+
 .logo-image{
     max-height: 450px;
+}
+.img-social:hover{
+    text-decoration: none;
+}
+.img-social img{
+    opacity: 0.7;
+}
+.img-social img:hover{
+    opacity: 1;
+    -webkit-box-shadow: 4px 4px 20px 0px rgba(50, 50, 50, 0.59);
+    -moz-box-shadow:    4px 4px 20px 0px rgba(50, 50, 50, 0.59);
+    box-shadow:         4px 4px 20px 0px rgba(50, 50, 50, 0.59);
+}
+
+.social-margin{
+    padding-bottom: 12px;
+}
+
+.shop-info{
+    font-size: 18px;
 }

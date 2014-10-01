@@ -1,1 +1,136 @@
-<h1>Пабстомпы</h1>
+<div class="row" ukraine-map>
+<!--<div id="map-container" width="300px" height="400px" class="row">-->
+
+</div>
+<div class="row">
+    <h1 class="text-center">Пабстомпы</h1>
+</div>
+<tabset type="pills">
+    <tab ng-repeat="tab in tabs" active="tab.active" heading="{{tab.header}}">Информацио о месте проведения будет
+        добавлена позже.
+    </tab>
+    <!--<tab active="{{tabs[1].active}}" heading="{{tabs[1].header}}">Информацио о месте проведения будет добавлена позже.</tab>
+    <tab active="{{tabs[2].active}}" heading="{{tabs[2].header}}">Информацио о месте проведения будет добавлена позже.</tab>
+    <tab active="{{tabs[3].active}}" heading="{{tabs[3].header}}">Информацио о месте проведения будет добавлена позже.
+    </tab>-->
+</tabset>
+<style>
+    .country {
+        fill: #E7E7E7;
+        stroke: none;
+    }
+
+    .country-boundary {
+        fill: none;
+        stroke: #999;
+    }
+
+    .region {
+        stroke: none;
+    }
+
+    .region-boundary {
+        fill: none;
+        stroke: #424242;
+
+        opacity: 0.5;
+    }
+    .ukraine-boundary {
+        fill: none;
+        stroke: #333;
+    }
+</style>
+
+<!--<script>
+    var mapScale = 4.35;
+    var mapRatio = .65;
+    var width = parseInt(d3.select('#map-container').style('width'));
+    var height = width * mapRatio;
+
+    var projection = d3.geo.albers()
+            .center([0, 48.5])
+            .rotate([-31.5, 0])
+            .parallels([45, 50])
+            .scale(width * mapScale)
+            .translate([width / 2, height / 2]);
+
+    var color = d3.scale.threshold()
+            .domain([10, 20, 30, 50])
+            .range(['#F7CB6D', '#C4AA73', '#899BAD', '#739AC4', '#2E5C8A'])
+
+    var svg = d3.select('#map-container').append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+    var countriesPath;
+    var regionsPath;
+    var riversPath;
+    var lakesPath;
+
+    d3.json('/img/ukraine.json', function (error, data) {
+
+        var regions = topojson.feature(data, data.objects['ukraine-regions']);
+
+        regionsPath = d3.geo.path()
+                .projection(projection);
+
+        console.log(regions);
+        svg.selectAll('.region')
+                .data(regions.features)
+                .enter().append('path')
+                .attr('class', 'region')
+                .attr('ng-click', function (d) {
+                    return "regionClick('" + d.id + "')";
+                })
+                .style("cursor", "pointer")
+                .style("stroke-opacity", .5)
+                .on("mouseover", function() { this.style.stroke = "black"; })
+                .on("mouseout", function() { this.style.stroke = "none"; })
+                .on("click", function() { console.log(this.id); })
+                .attr('d', regionsPath)
+                .attr('id', function (d) {
+                    return d.id;
+                })
+                .style('fill', function (d) {
+                    return color(d.properties.percent);
+                });
+
+        var ukraineRegionBoundaries = topojson.mesh(data,
+                data.objects['ukraine-regions'], function (a, b) {
+                    return a !== b
+                });
+
+        svg.append('path')
+                .datum(ukraineRegionBoundaries)
+                .attr('d', regionsPath)
+                .attr('class', 'region-boundary')
+
+        var ukraineBoundaries = topojson.mesh(data,
+                data.objects['ukraine-regions'], function (a, b) {
+                    return a === b
+                });
+
+        svg.append('path')
+                .datum(ukraineBoundaries)
+                .attr('d', regionsPath)
+                .attr('class', 'ukraine-boundary')
+
+        d3.select(window).on('resize', resize);
+    });
+
+    function resize() {
+        width = parseInt(d3.select('#map').style('width'));
+        height = width * mapRatio;
+
+        svg
+                .style('width', width + 'px')
+                .style('height', height + 'px');
+
+        svg.selectAll('.country,.country-boundary').attr('d', countriesPath);
+        svg.selectAll('.region,.region-boundary,.ukraine-boundary').attr('d', regionsPath);
+
+        projection
+                .scale(width * mapScale)
+                .translate([width / 2, height / 2]);
+    }
+</script>-->

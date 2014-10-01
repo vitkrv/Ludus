@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="row">
+            <h1 class="text-center">{{staff.name}}</h1>
+            <hr>
+            <div class="col-md-5">
+                <img class="img-responsive" ng-src="{{staff.avatar}}">
+            </div>
+            <div class="col-md-7 shop-info">
+                <p>
+                    <span ng-if="staff.available == true" class="label label-success">Есть в наличии</span>
+                    <span ng-if="staff.available == false" class="label label-default">Нет в наличии</span>
+                </p>
+
+                <p>
+                    Цена: <strong>{{staff.price}}</strong> грн.
+                </p>
+
+                <p>{{staff.description}}</p>
+
+                <div class="row"></div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="list-group gallery">
+                    <div class="col-xs-6 col-md-6" ng-repeat="photo in staff.photos">
+                        <div class="thumbnail">
+                            <a class="fancybox" rel="ligthbox" ng-href="{{photo}}">
+                                <img class="img-responsive" ng-src="{{photo}}"/>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.fancybox').fancybox({
+            padding: 0,
+            openEffect: 'elastic'
+        });
+    });
+</script>

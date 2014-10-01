@@ -19,11 +19,14 @@ var paths = {
     img: ['img/**/*.*'],
     template: ['template/**/*.html'],
     css: ['css/**/*.css', 'css/**/*.map'],
+    json_ukraine: ['img/ukraine.json'],
     angular: ['lib/angular/angular.min.js'],
     imageJs: ['custom-js/jquery.fancybox.pack.js'],
+    fancybox: ['css/**/*.gif', 'css/**/*.png'],
     uploadFile: ['lib/ng-file-upload/angular-file-upload-shim.min.js', 'lib/ng-file-upload/angular-file-upload.min.js'],
     jquery: ['lib/jquery/dist/jquery.min.js'],
     bootstrap: ['lib/bootstrap/dist/js/bootstrap.min.js'],
+    angular_bootstrap: ['lib/angular-bootstrap/ui-bootstrap.min.js', 'lib/angular-bootstrap/ui-bootstrap-tpls.min.js'],
     angular_route: ['lib/angular-route/angular-route.min.js']
 };
 
@@ -76,7 +79,7 @@ gulp.task('index', function () {
         .pipe(gulp.dest(paths.dist));
 });
 gulp.task('libs', function () {
-    return gulp.src(paths.angular.concat(paths.jquery, paths.angular_route, paths.bootstrap, paths.uploadFile, paths.scriptsMap, paths.imageJs))
+    return gulp.src(paths.angular.concat(paths.jquery, paths.angular_route, paths.bootstrap, paths.uploadFile, paths.scriptsMap, paths.imageJs, paths.angular_bootstrap))
         .pipe(gulp.dest(paths.dist + 'js'));
 });
 
@@ -97,13 +100,22 @@ gulp.task('img', function () {
     return gulp.src(paths.img)
         .pipe(gulp.dest(paths.dist + 'img'));
 });
+gulp.task('ukraine-json', function () {
+    return gulp.src(paths.json_ukraine)
+        .pipe(gulp.dest(paths.dist + 'img'));
+});
+
+gulp.task('fancybox', function () {
+    return gulp.src(paths.fancybox)
+        .pipe(gulp.dest(paths.dist + 'css'));
+});
 
 gulp.task('deploy', function () {
     return gulp.src('dist/**/*.*')
         .pipe(gulp.dest('../api/dist'));
 });
 
-gulp.task('build-dist', ['scripts', 'libs', 'index', 'partials', 'template', 'css', 'fonts', 'img']);
+gulp.task('build-dist', ['scripts', 'libs', 'index', 'partials', 'template', 'css', 'fonts', 'img', 'fancybox', 'ukraine-json']);
 gulp.task('watch', ['build-dist', 'scriptsWatch', 'partialsWatch', 'IndexWatch', 'cssWatch']);
 
 gulp.task('default', ['clean-dist'], function (cb) {
