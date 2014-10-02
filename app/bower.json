@@ -22,7 +22,9 @@
     "ng-breadcrumbs": "~0.1.2",
     "ng-file-upload": "~1.6.5",
     "angular-bootstrap": "~0.11.2",
-    "angular-scroll": "~0.6.2"
+    "angular-scroll": "~0.6.2",
+    "topojson": "~1.6.18",
+    "font-awesome": "~4.2.0"
   },
   "resolutions": {
     "angular": "1.2.22"
