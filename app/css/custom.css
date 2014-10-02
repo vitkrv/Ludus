@@ -140,7 +140,8 @@ th input[type="number"] {
 }
 
 .logo-image {
-    max-height: 450px;
+    height: 100%;
+
 }
 
 .img-social:hover {
@@ -199,4 +200,10 @@ th input[type="number"] {
     fill: none;
     stroke: #330808;
     stroke-width: 2px;
+}
+
+/*pubstomps*/
+
+.pubstomps {
+    fill: #880000;
 }

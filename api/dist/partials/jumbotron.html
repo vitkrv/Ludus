@@ -1,5 +1,11 @@
-<div class="jumbotron">
-    <div class="container text-center">
-        <h1>Ludus</h1>
-    </div>
+<div class="carousel" ng-controller="CarouselCtrl">
+    <carousel interval="myInterval">
+        <slide ng-repeat="slide in slides" active="slide.active">
+            <img ng-src="{{slide.image}}" style="margin:auto;">
+
+            <div class="carousel-caption hidden-xs">
+                <h2><strong>{{slide.text}}</strong></h2>
+            </div>
+        </slide>
+    </carousel>
 </div>

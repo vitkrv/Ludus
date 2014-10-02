@@ -1,16 +1,20 @@
-<div class="row" ukraine-map>
-    <!--<div id="map-container" width="300px" height="400px" class="row">-->
-</div>
 <div class="row">
     <h1 class="text-center">Пабстомпы</h1>
 </div>
+<hr>
+<div class="row" ukraine-map></div>
 <div class="row" id="tabs">
     <tabset type="pills">
-        <tab ng-repeat="tab in tabs" active="tab.active" heading="{{tab.header}}">Информацио о
-            месте проведения будет
-            добавлена позже.
-            <div class="col-md-12">
-                <img class="img-responsive" src="http://localhost:3000/img/logo.jpg"/>
+        <tab ng-repeat="tab in tabs" active="tab.active" heading="{{tab.header}}">
+            <hr>
+            <div class="row" ng-include="tab.partial"></div>
+            <hr>
+            <div class="row">
+                <h3 class="text-center">Информацио о месте проведения будет добавлена позже.</h3>
+
+                <div class="col-md-12">
+                    <img class="img-responsive" src="img/logo.jpg"/>
+                </div>
             </div>
         </tab>
     </tabset>

@@ -344,10 +344,34 @@ appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location',
         };
 
         $scope.tabs = [
-            {header: "Харьков", id: 'UKR-328'},
-            {header: "Ужгород", id: 'UKR-329'},
-            {header: "Львов", id: 'UKR-325'},
-            {header: "Одесса", id: 'UKR-322'}
+            {header: "Харьков", id: 'UKR-328', partial: '/partials/pubstomps/kharkov.html'},
+            {header: "Львов", id: 'UKR-291', partial: '/partials/pubstomps/lvov.html'},
+            {header: "Симферополь", id: 'UKR-283', partial: '/partials/pubstomps/simpheropol.html'},
+            {header: "Полтава & Кременчуг", id: 'UKR-330', partial: '/partials/pubstomps/poltava_kremenchug.html'},
+            /*{header: "Кременчуг", id: 'UKR-330', partial: '/partials/pubstomps/kharkov.html'},*/
+            {header: "Херсон", id: 'UKR-4827', partial: '/partials/pubstomps/herson.html'},
+            {header: "Запорожье", id: 'UKR-331', partial: '/partials/pubstomps/zaporogie.html'},
+            {header: "Днепропетровск", id: 'UKR-326', partial: '/partials/pubstomps/dnipro.html'},
+            {header: "Курск", id: 'UKR-555', partial: '/partials/pubstomps/kharkov.html'}
+        ];
+    }
+]);
+appControllers.controller('CarouselCtrl', ['$rootScope', '$scope', '$location', '$document',
+    function ($rootScope, $scope, $location, $document) {
+        $scope.myInterval = 6500;
+        $scope.slides = [
+            {
+                image: 'img/slides/slide1.jpg',
+                text: 'Следующий пабстомп'
+            },
+            {
+                image: 'img/slides/slide2.jpg',
+                text: 'Магазин'
+            },
+            {
+                image: 'img/slides/slide1.jpg',
+                text: 'Пабстомпы'
+            }
         ];
     }
 ]);
@@ -407,63 +431,78 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
 
                 d3.json('/img/ukraine.json', function (error, data) {
 
-                    var regions = topojson.feature(data, data.objects['ukraine-regions']);
+                        var regions = topojson.feature(data, data.objects['ukraine-regions']);
 
-                    regionsPath = d3.geo.path()
-                        .projection(projection);
+                        regionsPath = d3.geo.path()
+                            .projection(projection);
 
-                    console.log(regions);
-                    svg.selectAll('.region')
-                        .data(regions.features)
-                        .enter().append('path')
-                        .attr('class', 'region')
-                        .attr('ng-click', function (d) {
-                            return "regionClick('" + d.id + "')";
-                        })
-                        .style("cursor", "pointer")
-                        .style("stroke-opacity", .5)
-                        .on("mouseover", function () {
-                            this.style.stroke = "black";
-                        })
-                        .on("mouseout", function () {
-                            this.style.stroke = "none";
-                        })
-                        /* .on("click", function() { console.log(this.id); })*/
-                        .attr('d', regionsPath)
-                        .attr('id', function (d) {
-                            return d.id;
-                        })
-                        /*.style('fill', function (d) {
-                            return color(d.properties.percent);
-                        });*/
+                        svg.selectAll('.region')
+                            .data(regions.features)
+                            .enter().append('path')
+                            .attr('ng-click', function (d) {
+                                return "regionClick('" + d.id + "')";
+                            })
+                            .style("cursor", "pointer")
+                            .style("stroke-opacity", .5)
+                            .on("mouseover", function () {
+                                this.style.stroke = "black";
+                            })
+                            .on("mouseout", function () {
+                                this.style.stroke = "none";
+                            })
+                            .attr('d', regionsPath)
+                            .attr('class', function (d) {
+                                var className = '';
+                                for (var j = 0; j < scope.tabs.length; j++) {
+                                    if (d.id == scope.tabs[j].id) {
+                                        className = 'pubstomps';
+                                        break;
+                                    }
+                                }
+                                return 'region ' + className;
+                            });
 
-                    var ukraineRegionBoundaries = topojson.mesh(data,
-                        data.objects['ukraine-regions'], function (a, b) {
-                            return a !== b
-                        });
+                        svg.selectAll('.pubstomps')
+                            .on("mouseover", function () {
+                                d3.select(this).transition()
+                                    .style("fill", "#450000")
+                                    .duration(500);
+                            })
+                            .on("mouseout", function () {
+                                d3.select(this).transition()
+                                    .style("fill", " #880000")
+                                    .duration(500);
+                            });
 
-                    svg.append('path')
-                        .datum(ukraineRegionBoundaries)
-                        .attr('d', regionsPath)
-                        .attr('class', 'region-boundary')
+                        var ukraineRegionBoundaries = topojson.mesh(data,
+                            data.objects['ukraine-regions'], function (a, b) {
+                                return a !== b
+                            });
 
-                    var ukraineBoundaries = topojson.mesh(data,
-                        data.objects['ukraine-regions'], function (a, b) {
-                            return a === b
-                        });
+                        svg.append('path')
+                            .datum(ukraineRegionBoundaries)
+                            .attr('d', regionsPath)
+                            .attr('class', 'region-boundary')
 
-                    svg.append('path')
-                        .datum(ukraineBoundaries)
-                        .attr('d', regionsPath)
-                        .attr('class', 'ukraine-boundary')
+                        var ukraineBoundaries = topojson.mesh(data,
+                            data.objects['ukraine-regions'], function (a, b) {
+                                return a === b
+                            });
 
-                    d3.select($window).on('resize', resize);
-                    angular.element($window).trigger('resize');
-                    resize();
+                        svg.append('path')
+                            .datum(ukraineBoundaries)
+                            .attr('d', regionsPath)
+                            .attr('class', 'ukraine-boundary')
 
-                    element.removeAttr("ukraine-map");
-                    $compile(element[0])(scope);
-                });
+                        d3.select($window).on('resize', resize);
+                        angular.element($window).trigger('resize');
+                        resize();
+
+                        element.removeAttr("ukraine-map");
+                        $compile(element[0])(scope);
+                    }
+                )
+                ;
 
                 function resize() {
                     width = parseInt(d3.select(element[0]).style('width'));
@@ -480,8 +519,10 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
                         .scale(width * mapScale)
                         .translate([width / 2, height / 2]);
                 }
-            }}
-    }]);
+            }
+        }
+    }])
+;
 appFilters.filter('shopFilter', function(){
         return function(array, expression, comparator) {
             if (!angular.isArray(array)) return array;

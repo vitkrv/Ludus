@@ -53,63 +53,78 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
 
                 d3.json('/img/ukraine.json', function (error, data) {
 
-                    var regions = topojson.feature(data, data.objects['ukraine-regions']);
+                        var regions = topojson.feature(data, data.objects['ukraine-regions']);
 
-                    regionsPath = d3.geo.path()
-                        .projection(projection);
+                        regionsPath = d3.geo.path()
+                            .projection(projection);
 
-                    console.log(regions);
-                    svg.selectAll('.region')
-                        .data(regions.features)
-                        .enter().append('path')
-                        .attr('class', 'region')
-                        .attr('ng-click', function (d) {
-                            return "regionClick('" + d.id + "')";
-                        })
-                        .style("cursor", "pointer")
-                        .style("stroke-opacity", .5)
-                        .on("mouseover", function () {
-                            this.style.stroke = "black";
-                        })
-                        .on("mouseout", function () {
-                            this.style.stroke = "none";
-                        })
-                        /* .on("click", function() { console.log(this.id); })*/
-                        .attr('d', regionsPath)
-                        .attr('id', function (d) {
-                            return d.id;
-                        })
-                        /*.style('fill', function (d) {
-                            return color(d.properties.percent);
-                        });*/
+                        svg.selectAll('.region')
+                            .data(regions.features)
+                            .enter().append('path')
+                            .attr('ng-click', function (d) {
+                                return "regionClick('" + d.id + "')";
+                            })
+                            .style("cursor", "pointer")
+                            .style("stroke-opacity", .5)
+                            .on("mouseover", function () {
+                                this.style.stroke = "black";
+                            })
+                            .on("mouseout", function () {
+                                this.style.stroke = "none";
+                            })
+                            .attr('d', regionsPath)
+                            .attr('class', function (d) {
+                                var className = '';
+                                for (var j = 0; j < scope.tabs.length; j++) {
+                                    if (d.id == scope.tabs[j].id) {
+                                        className = 'pubstomps';
+                                        break;
+                                    }
+                                }
+                                return 'region ' + className;
+                            });
 
-                    var ukraineRegionBoundaries = topojson.mesh(data,
-                        data.objects['ukraine-regions'], function (a, b) {
-                            return a !== b
-                        });
+                        svg.selectAll('.pubstomps')
+                            .on("mouseover", function () {
+                                d3.select(this).transition()
+                                    .style("fill", "#450000")
+                                    .duration(500);
+                            })
+                            .on("mouseout", function () {
+                                d3.select(this).transition()
+                                    .style("fill", " #880000")
+                                    .duration(500);
+                            });
 
-                    svg.append('path')
-                        .datum(ukraineRegionBoundaries)
-                        .attr('d', regionsPath)
-                        .attr('class', 'region-boundary')
+                        var ukraineRegionBoundaries = topojson.mesh(data,
+                            data.objects['ukraine-regions'], function (a, b) {
+                                return a !== b
+                            });
 
-                    var ukraineBoundaries = topojson.mesh(data,
-                        data.objects['ukraine-regions'], function (a, b) {
-                            return a === b
-                        });
+                        svg.append('path')
+                            .datum(ukraineRegionBoundaries)
+                            .attr('d', regionsPath)
+                            .attr('class', 'region-boundary')
 
-                    svg.append('path')
-                        .datum(ukraineBoundaries)
-                        .attr('d', regionsPath)
-                        .attr('class', 'ukraine-boundary')
+                        var ukraineBoundaries = topojson.mesh(data,
+                            data.objects['ukraine-regions'], function (a, b) {
+                                return a === b
+                            });
 
-                    d3.select($window).on('resize', resize);
-                    angular.element($window).trigger('resize');
-                    resize();
+                        svg.append('path')
+                            .datum(ukraineBoundaries)
+                            .attr('d', regionsPath)
+                            .attr('class', 'ukraine-boundary')
 
-                    element.removeAttr("ukraine-map");
-                    $compile(element[0])(scope);
-                });
+                        d3.select($window).on('resize', resize);
+                        angular.element($window).trigger('resize');
+                        resize();
+
+                        element.removeAttr("ukraine-map");
+                        $compile(element[0])(scope);
+                    }
+                )
+                ;
 
                 function resize() {
                     width = parseInt(d3.select(element[0]).style('width'));
@@ -126,5 +141,7 @@ appDirectives.directive('ukraineMap', ['$compile', '$window',
                         .scale(width * mapScale)
                         .translate([width / 2, height / 2]);
                 }
-            }}
-    }]);
+            }
+        }
+    }])
+;
