@@ -56,7 +56,8 @@ appServices.factory('StaffService', function ($http, $rootScope) {
             array.splice(index, 1);
         },
         addPhotoFromUrl: function (array, url) {
-            array.push(url);
+            if (angular.isArray(array))
+                array.push(url);
         }
     };
 });

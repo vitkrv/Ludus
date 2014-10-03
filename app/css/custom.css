@@ -172,6 +172,10 @@ th input[type="number"] {
     max-width: 207px;
 }
 
+.slide-header {
+    text-shadow: 1px 1px 13px rgba(0, 0, 0, 1);
+}
+
 /*map*/
 .country {
     fill: #E7E7E7;

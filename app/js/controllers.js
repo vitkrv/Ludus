@@ -127,6 +127,7 @@ appControllers.controller('StaffCreateCtrl', ['$rootScope', '$scope', '$location
         };
 
         $scope.createStaff = function () {
+            $scope.staff.towns = ['Харьков'];
             StaffService.createStaff($scope.staff).success(function () {
                 $rootScope.toEditList();
             });
@@ -174,6 +175,7 @@ appControllers.controller('StaffEditCtrl', ['$rootScope', '$scope', '$location',
         };
 
         $scope.updateStaff = function () {
+            $scope.staff.towns = ['Харьков'];
             StaffService.updateStaff($scope.staff).success(function () {
                 $rootScope.toEditList();
             });
@@ -219,7 +221,6 @@ appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location',
             {header: "Львов", id: 'UKR-291', partial: '/partials/pubstomps/lvov.html'},
             {header: "Симферополь", id: 'UKR-283', partial: '/partials/pubstomps/simpheropol.html'},
             {header: "Полтава & Кременчуг", id: 'UKR-330', partial: '/partials/pubstomps/poltava_kremenchug.html'},
-            /*{header: "Кременчуг", id: 'UKR-330', partial: '/partials/pubstomps/kharkov.html'},*/
             {header: "Херсон", id: 'UKR-4827', partial: '/partials/pubstomps/herson.html'},
             {header: "Запорожье", id: 'UKR-331', partial: '/partials/pubstomps/zaporogie.html'},
             {header: "Днепропетровск", id: 'UKR-326', partial: '/partials/pubstomps/dnipro.html'},
@@ -240,7 +241,7 @@ appControllers.controller('CarouselCtrl', ['$rootScope', '$scope', '$location', 
                 text: 'Магазин'
             },
             {
-                image: 'img/slides/slide1.jpg',
+                image: 'img/slides/slide3.jpg',
                 text: 'Пабстомпы'
             }
         ];

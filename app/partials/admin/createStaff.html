@@ -22,7 +22,15 @@
                             <img class="img-responsive" ng-src="{{staff.avatar}}"/>
                         </div>
                         <div class="col-md-6">
-                            <input type="file" ng-file-select="onFileSelect($files, true)">
+                            <div class="col-md-12">
+                                <input type="file" ng-file-select="onFileSelect($files, true)">
+                            </div>
+                            <div class="col-md-12">
+                                <input type="url" class="form-control"
+                                       ng-model="avatarUrl"
+                                       ng-enter="staff.avatar = avatarUrl"
+                                       placeholder="Адрес аватара..."/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <!--<div class="form-group">
                     <p class="col-md-12">Доступно в: <span ng-repeat="town in staff.towns">{{town}} </span></p>
 
                     <div class="btn-group btn-group-sm col-md-12">
@@ -49,7 +57,7 @@
                                 ng-click="addTown(staff,town)">{{town}}
                         </button>
                     </div>
-                </div>
+                </div>-->
                 <div class="form-group">
                     <div class="col-md-12">
                         <div class="col-md-6">
