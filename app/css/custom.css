@@ -211,3 +211,12 @@ th input[type="number"] {
 .pubstomps {
     fill: #880000;
 }
+
+/*mediapartners*/
+.footer-media img{
+    max-height: 53px;
+    opacity: 0.62;
+}
+.footer-media img:hover{
+    opacity: 1;
+}
