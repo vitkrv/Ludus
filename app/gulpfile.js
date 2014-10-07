@@ -120,6 +120,14 @@ gulp.task('deploy', function () {
         .pipe(gulp.dest('../api/dist'));
 });
 
+
+// copy to prod
+gulp.task('prod', function () {
+    return gulp.src(paths.dist + "**/*.*")
+        .pipe(gulp.dest('D:/RubyFiles/Heroku/ludus-prod/dist'));
+});
+
+
 gulp.task('build-dist', ['scripts', 'libs', 'index', 'partials', 'template', 'css', 'fonts', 'img', 'fancybox', 'ukraine-json']);
 gulp.task('watch', ['build-dist', 'scriptsWatch', 'partialsWatch', 'IndexWatch', 'cssWatch']);
 

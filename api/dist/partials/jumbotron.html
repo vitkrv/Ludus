@@ -1,11 +1,13 @@
 <div class="carousel" ng-controller="CarouselCtrl">
     <carousel interval="myInterval">
         <slide ng-repeat="slide in slides" active="slide.active">
-            <img ng-src="{{slide.image}}" style="margin:auto;">
+            <a ng-href="{{slide.link}}">
+                <img ng-src="{{slide.image}}" style="margin:auto;">
 
-            <div class="carousel-caption hidden-xs">
-                <h2 class="slide-header"><strong>{{slide.text}}</strong></h2>
-            </div>
+                <div class="carousel-caption hidden-xs">
+                    <h2 class="slide-header"><strong>{{slide.text}}</strong></h2>
+                </div>
+            </a>
         </slide>
     </carousel>
 </div>
