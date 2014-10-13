@@ -219,12 +219,9 @@ appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location',
         $scope.tabs = [
             {header: "Харьков", id: 'UKR-328', partial: '/partials/pubstomps/kharkov.html'},
             {header: "Львов", id: 'UKR-291', partial: '/partials/pubstomps/lvov.html'},
-            {header: "Симферополь", id: 'UKR-283', partial: '/partials/pubstomps/simpheropol.html'},
             {header: "Полтава & Кременчуг", id: 'UKR-330', partial: '/partials/pubstomps/poltava_kremenchug.html'},
-            {header: "Херсон", id: 'UKR-4827', partial: '/partials/pubstomps/herson.html'},
             {header: "Запорожье", id: 'UKR-331', partial: '/partials/pubstomps/zaporogie.html'},
-            {header: "Днепропетровск", id: 'UKR-326', partial: '/partials/pubstomps/dnipro.html'},
-            {header: "Курск", id: 'UKR-555', partial: '/partials/pubstomps/kharkov.html'}
+            {header: "Днепропетровск", id: 'UKR-326', partial: '/partials/pubstomps/dnipro.html'}
         ];
     }
 ]);

@@ -220,3 +220,16 @@ th input[type="number"] {
 .footer-media img:hover{
     opacity: 1;
 }
+
+/*sponsors*/
+.sponsors{
+    margin-top: 17px;
+}
+.sponsors div{
+    margin-top: 6px;
+}
+
+
+.main-info{
+    min-height: 600px;
+}
