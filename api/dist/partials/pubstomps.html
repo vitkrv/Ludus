@@ -5,17 +5,10 @@
 <div class="row" ukraine-map></div>
 <div class="row" id="tabs">
     <tabset type="pills">
-        <tab ng-repeat="tab in tabs" active="tab.active" heading="{{tab.header}}">
+        <tab ng-repeat="tab in tabs" active="tab.active" heading="{{tab.header}}" select="selectTab(tab.location)">
             <hr>
             <div class="row" ng-include="tab.partial"></div>
-            <hr>
-            <div class="row">
-                <h3 class="text-center">Информацио о месте проведения будет добавлена позже.</h3>
-
-                <div class="col-md-12">
-                    <img class="img-responsive" src="img/logo.jpg"/>
-                </div>
-            </div>
         </tab>
     </tabset>
 </div>
+
