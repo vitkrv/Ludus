@@ -346,27 +346,29 @@ appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location',
         };
 
         $scope.selectTab = function (location) {
-            var var_location = new google.maps.LatLng(location.x, location.y);
+            if (location) {
+                var var_location = new google.maps.LatLng(location.x, location.y);
 
-            var var_mapoptions = {
-                center: var_location,
-                zoom: 15
-            };
+                var var_mapoptions = {
+                    center: var_location,
+                    zoom: 15
+                };
 
-            var var_marker = new google.maps.Marker({
-                position: var_location,
-                map: var_map,
-                title: "Venice"});
+                var var_marker = new google.maps.Marker({
+                    position: var_location,
+                    map: var_map,
+                    title: "Venice"});
 
-            var var_map = new google.maps.Map(document.getElementById(location.id),
-                var_mapoptions);
+                var var_map = new google.maps.Map(document.getElementById(location.id),
+                    var_mapoptions);
 
-            var_marker.setMap(var_map);
+                var_marker.setMap(var_map);
+            }
         };
 
         $scope.tabs = [
             {header: "Харьков", id: 'UKR-328', partial: '/partials/pubstomps/kharkov.html', location: {x: 49.98859, y: 36.225452, id: 'map-container-khr'}},
-            {header: "Львов", id: 'UKR-291', partial: '/partials/pubstomps/lvov.html'},
+            {header: "Львов", id: 'UKR-291', partial: '/partials/pubstomps/lvov.html', location: {x: 49.837438, y: 24.029006, id: 'map-container-lv'}},
             {header: "Полтава", id: 'UKR-330', partial: '/partials/pubstomps/poltava.html', location: {x: 49.5934284, y: 34.5367556, id: 'map-container-plt'}},
             {header: "Кременчуг", id: 'UKR-330', partial: '/partials/pubstomps/kremenchug.html'},
             {header: "Запорожье", id: 'UKR-331', partial: '/partials/pubstomps/zaporogie.html'},
