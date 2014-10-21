@@ -241,9 +241,8 @@ appControllers.controller('PubstompsCtrl', ['$rootScope', '$scope', '$location',
             {header: "Харьков", id: 'UKR-328', partial: '/partials/pubstomps/kharkov.html', location: {x: 49.98859, y: 36.225452, id: 'map-container-khr'}},
             {header: "Львов", id: 'UKR-291', partial: '/partials/pubstomps/lvov.html', location: {x: 49.837438, y: 24.029006, id: 'map-container-lv'}},
             {header: "Полтава", id: 'UKR-330', partial: '/partials/pubstomps/poltava.html', location: {x: 49.5934284, y: 34.5367556, id: 'map-container-plt'}},
-            {header: "Кременчуг", id: 'UKR-330', partial: '/partials/pubstomps/kremenchug.html'},
-            {header: "Запорожье", id: 'UKR-331', partial: '/partials/pubstomps/zaporogie.html'},
-            {header: "Днепропетровск", id: 'UKR-326', partial: '/partials/pubstomps/dnipro.html'}
+            {header: "Кременчуг", id: 'UKR-330', partial: '/partials/pubstomps/kremenchug.html', location: {x: 49.062619, y:33.415384, id: 'map-container-kre'}},
+            {header: "Запорожье", id: 'UKR-331', partial: '/partials/pubstomps/zaporogie.html', location: {x: 47.836923, y: 35.1354808, id: 'map-container-zap'}}
         ];
         $scope.$on('$includeContentLoaded', function () {
             $scope.selectTab($scope.tabs[0].location);
@@ -271,5 +270,11 @@ appControllers.controller('CarouselCtrl', ['$rootScope', '$scope', '$location', 
                 text: 'Пабстомпы'
             }
         ];
+    }
+]);
+
+appControllers.controller('BuyCtrl', ['$rootScope', '$scope',
+    function ($rootScope, $scope) {
+        $rootScope.header = 'Ludus - Как купить?';
     }
 ]);

@@ -213,29 +213,49 @@ th input[type="number"] {
 }
 
 /*mediapartners*/
-.footer-media img{
+.footer-media img {
     max-height: 46px;
     opacity: 0.62;
 }
-.footer-media img:hover{
+
+.footer-media img:hover {
     opacity: 1;
 }
 
 /*sponsors*/
-.sponsors{
+.sponsors {
     margin-top: 17px;
 }
-.sponsors div{
+
+.sponsors div {
     margin-top: 6px;
 }
 
-
-.main-info{
+.main-info {
     min-height: 600px;
 }
 
-.padding-bottom{
+.padding-bottom {
     padding-bottom: 12px;
 }
 
-.map-container { height: 300px }
+.map-container {
+    height: 300px
+}
+
+.contactList thead tr {
+    font-weight: bold;
+}
+
+.contactList tbody tr td:first-of-type {
+    font-style: italic;
+    font-size: 16px;
+}
+
+.attention {
+    font-size: 22px;
+    background-color: rgba(255, 177, 52, 0.56);
+    border-color: rgba(208, 128, 2, 0.32);
+    font-weight: 400;
+    color: #000000;
+}
