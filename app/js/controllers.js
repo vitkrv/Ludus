@@ -255,11 +255,6 @@ appControllers.controller('CarouselCtrl', ['$rootScope', '$scope', '$location', 
         $scope.myInterval = 6500;
         $scope.slides = [
             {
-                image: 'img/slides/slide1.jpg',
-                link: 'http://dota2.starladder.tv/',
-                text: 'Следующий пабстомп'
-            },
-            {
                 image: 'img/slides/slide2.jpg',
                 link: '#/shop',
                 text: 'Магазин'

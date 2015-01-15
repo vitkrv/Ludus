@@ -60,7 +60,7 @@ app.config(['$locationProvider', '$routeProvider',
                 controller: 'AboutCtrl'
             }).
             when('/pubstomps', {
-                templateUrl: 'partials/pubstomps.html',
+                templateUrl: 'partials/pubstomps2.html',
                 controller: 'PubstompsCtrl'
             }).
             otherwise({
@@ -387,11 +387,6 @@ appControllers.controller('CarouselCtrl', ['$rootScope', '$scope', '$location', 
     function ($rootScope, $scope, $location, $document) {
         $scope.myInterval = 6500;
         $scope.slides = [
-            {
-                image: 'img/slides/slide1.jpg',
-                link: 'http://dota2.starladder.tv/',
-                text: 'Следующий пабстомп'
-            },
             {
                 image: 'img/slides/slide2.jpg',
                 link: '#/shop',

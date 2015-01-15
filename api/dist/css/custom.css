@@ -259,3 +259,7 @@ th input[type="number"] {
     font-weight: 400;
     color: #000000;
 }
+
+.pubstomps-starladder *{
+    font-size: 18px;
+}

@@ -60,7 +60,7 @@ app.config(['$locationProvider', '$routeProvider',
                 controller: 'AboutCtrl'
             }).
             when('/pubstomps', {
-                templateUrl: 'partials/pubstomps.html',
+                templateUrl: 'partials/pubstomps2.html',
                 controller: 'PubstompsCtrl'
             }).
             otherwise({
